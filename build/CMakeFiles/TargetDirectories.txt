@@ -1,0 +1,13 @@
+/home/lizhe/codes/DB/mydb/build/CMakeFiles/rebuild_cache.dir
+/home/lizhe/codes/DB/mydb/build/CMakeFiles/edit_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/CMakeFiles/rebuild_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/CMakeFiles/edit_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/CMakeFiles/mydb.dir
+/home/lizhe/codes/DB/mydb/build/src/CMakeFiles/mydb_lib.dir
+/home/lizhe/codes/DB/mydb/build/src/backend/CMakeFiles/rebuild_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/backend/CMakeFiles/edit_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/dbms/CMakeFiles/rebuild_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/dbms/CMakeFiles/edit_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/sql_parser/CMakeFiles/rebuild_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/sql_parser/CMakeFiles/edit_cache.dir
+/home/lizhe/codes/DB/mydb/build/src/sql_parser/CMakeFiles/SqlParser.dir

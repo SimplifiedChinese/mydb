@@ -1,0 +1,168 @@
+#include <cstdio>
+#include <cstdlib>
+#include "Execute.h"
+
+#include "dbms/dbms.h"
+
+// void free_column_ref(column_ref *c) {
+//     if (c->table)
+//         free(c->table);
+//     free(c->column);
+//     free(c);
+// }
+
+// void free_column_list(linked_list *cols) {
+//     while (cols) {
+//         auto c = (column_ref *) cols->data;
+//         free_column_ref(c);
+//         linked_list *t = cols;
+//         cols = cols->next;
+//         free(t);
+//     }
+// }
+
+// void free_expr_list(linked_list *exprs) {
+//     while (exprs) {
+//         auto e = (expr_node *) exprs->data;
+//         free_expr(e);
+//         linked_list *t = exprs;
+//         exprs = exprs->next;
+//         free(t);
+//     }
+
+// }
+
+// void free_values(linked_list *values) {
+//     while (values) {
+//         auto exprs = (linked_list *) values->data;
+//         free_expr_list(exprs);
+//         linked_list *t = values;
+//         values = values->next;
+//         free(t);
+//     }
+// }
+
+// void free_tables(linked_list *tables) {
+//     while (tables) {
+//         auto table_name = (char *) tables->data;
+//         free(table_name);
+//         linked_list *t = tables;
+//         tables = tables->next;
+//         free(t);
+//     }
+// }
+
+// void report_sql_error(const char *error_name, const char *msg) {
+//     printf("SQL Error[%s]: %s\n", error_name, msg);
+// }
+
+// void execute_desc_tables(const char *table_name) {
+//     dbms::get_instance()->drop_table();
+//     free((void *) table_name);
+// }
+
+// void execute_show_tables() {
+//     dbms::get_instance()->listTables();
+// }
+
+// void execute_create_db(const char *db_name) {
+//     database db;
+//     db.create(db_name);
+//     db.close();
+//     free((void *) db_name);
+// }
+
+// void execute_create_tb(const table_def *table) {
+//     dbms::get_instance()->createTable(table);
+//     free((void *) table->name);
+//     column_defs *c = table->columns;
+//     while (c) {
+//         column_defs *next = c->next;
+//         free((void *) c->name);
+//         free((void *) c);
+//         c = next;
+//     }
+//     linked_list *cons = table->constraints;
+//     while (cons) {
+//         linked_list *next = cons->next;
+//         auto *tc = (table_constraint *) (cons->data);
+//         switch(tc->type){
+//             case CONSTRAINT_FOREIGN_KEY:
+//                 free(tc->foreign_column_name);
+//                 free(tc->foreign_table_name);
+//                 break;
+//             case CONSTRAINT_PRIMARY_KEY:
+//                 free_tables(tc->values);
+//                 break;
+//             case CONSTRAINT_CHECK:
+//                 free(tc->column_name);
+//                 free_expr_list(tc->values);
+//                 break;
+//         }
+//         free(tc);
+//         free(cons);
+//         cons = next;
+//     }
+
+// }
+
+// void execute_drop_db(const char *db_name) {
+//     dbms::get_instance()->dropDB(db_name);
+//     free((void *) db_name);
+// }
+
+// void execute_drop_table(const char *table_name) {
+//     dbms::get_instance()->dropTable(table_name);
+//     free((void *) table_name);
+// }
+
+// void execute_use_db(const char *db_name) {
+//     dbms::get_instance()->switchToDB(db_name);
+//     free((void *) db_name);
+// }
+
+// void execute_insert_row(struct insert_argu *stmt) {
+//     assert(stmt->table);
+//     dbms::get_instance()->insertRow(stmt->table, stmt->columns, stmt->values);
+//     free_column_list(stmt->columns);
+//     free_values(stmt->values);
+//     free((void *) stmt->table);
+// }
+
+// void execute_select(struct select_argu *stmt) {
+//     dbms::get_instance()->selectRow(stmt->tables, stmt->column_expr, stmt->where);
+//     free_tables(stmt->tables);
+//     free_expr_list(stmt->column_expr);
+//     if (stmt->where)
+//         free(stmt->where);
+// }
+
+// void execute_delete(struct delete_argu *stmt) {
+//     dbms::get_instance()->deleteRow(stmt->table, stmt->where);
+//     free(stmt->table);
+//     if (stmt->where)
+//         free_expr(stmt->where);
+// }
+
+// void execute_update(struct update_argu *stmt) {
+//     dbms::get_instance()->updateRow(stmt->table, stmt->where, stmt->column, stmt->val_expr);
+//     free(stmt->table);
+//     if (stmt->where)
+//         free_expr(stmt->where);
+//     free_column_ref(stmt->column);
+//     free_expr(stmt->val_expr);
+// }
+
+// void execute_drop_idx(struct column_ref *tb_col) {
+//     dbms::get_instance()->dropIndex(tb_col);
+//     free_column_ref(tb_col);
+// }
+
+// void execute_create_idx(struct column_ref *tb_col) {
+//     dbms::get_instance()->createIndex(tb_col);
+//     free_column_ref(tb_col);
+// }
+
+// void execute_sql_eof() {
+//     dbms::get_instance()->exit();
+// }

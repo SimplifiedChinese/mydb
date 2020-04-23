@@ -1,0 +1,1 @@
+/usr/bin/c++  --std=c++11 -O3 -Wall -Wextra   -rdynamic CMakeFiles/mydb.dir/main.cpp.o  -o mydb sql_parser/libSqlParser.a libmydb_lib.a 
