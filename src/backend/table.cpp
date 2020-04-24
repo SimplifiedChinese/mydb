@@ -1,11 +1,19 @@
 #include "table.h"
 #include "../dbms/dbms.h"
+#include "../sql_parser/Execute.h"
 #include <cstdio>
 #include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <string>
 #include <fstream>
+
+bool fill_table_header(table_header_t *header, const table_def *table){
+	std::memset(header, 0, sizeof(table_header_t));
+	std::strncpy(header->table_name, table->name, MAX_NAME_LEN);
+	return true;
+}
+
 
 bool table_manager::open(const char *table_name)
 {

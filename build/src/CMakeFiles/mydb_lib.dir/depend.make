@@ -14,6 +14,8 @@ src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/backend/table.cpp
 src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/backend/table.h
 src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/constants.h
 src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/dbms/dbms.h
+src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/sql_parser/Execute.h
+src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/sql_parser/type_def.h
 
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/backend/database.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/backend/table.h
@@ -27,6 +29,7 @@ src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/constants.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/dbms/dbms.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/sql_parser/Execute.cpp
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/sql_parser/Execute.h
+src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/sql_parser/Expression.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/sql_parser/type_def.h
 
 src/CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o: ../src/constants.h

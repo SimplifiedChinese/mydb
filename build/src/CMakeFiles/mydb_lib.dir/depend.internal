@@ -15,6 +15,8 @@ src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o
  /home/lizhe/codes/DB/mydb/src/backend/table.h
  /home/lizhe/codes/DB/mydb/src/constants.h
  /home/lizhe/codes/DB/mydb/src/dbms/dbms.h
+ /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.h
+ /home/lizhe/codes/DB/mydb/src/sql_parser/type_def.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o
  /home/lizhe/codes/DB/mydb/src/backend/database.h
  /home/lizhe/codes/DB/mydb/src/backend/table.h
@@ -22,12 +24,13 @@ src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o
  /home/lizhe/codes/DB/mydb/src/dbms/dbms.cpp
  /home/lizhe/codes/DB/mydb/src/dbms/dbms.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o
- ../src/backend/database.h
- ../src/backend/table.h
- ../src/constants.h
- ../src/dbms/dbms.h
+ /home/lizhe/codes/DB/mydb/src/backend/database.h
+ /home/lizhe/codes/DB/mydb/src/backend/table.h
+ /home/lizhe/codes/DB/mydb/src/constants.h
+ /home/lizhe/codes/DB/mydb/src/dbms/dbms.h
  /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.cpp
  /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.h
+ /home/lizhe/codes/DB/mydb/src/sql_parser/Expression.h
  /home/lizhe/codes/DB/mydb/src/sql_parser/type_def.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o
  ../src/constants.h

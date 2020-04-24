@@ -6,35 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../src/backend/database.h
-../constants.h
 ../src/constants.h
-table.h
-../src/backend/table.h
-cstdio
--
-cstring
--
-cstdlib
--
-vector
--
-
-../src/backend/table.h
-../constants.h
-../src/constants.h
-string
--
-
-../src/constants.h
-
-../src/dbms/dbms.h
-../backend/database.h
-../src/backend/database.h
-../backend/table.h
-../src/backend/table.h
-cstdio
--
 
 /home/lizhe/codes/DB/mydb/src/backend/Compare.cpp
 string
@@ -81,6 +53,8 @@ table.h
 /home/lizhe/codes/DB/mydb/src/backend/table.h
 ../dbms/dbms.h
 /home/lizhe/codes/DB/mydb/src/dbms/dbms.h
+../sql_parser/Execute.h
+/home/lizhe/codes/DB/mydb/src/sql_parser/Execute.h
 cstdio
 -
 cassert
@@ -123,14 +97,18 @@ cstdio
 -
 
 /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.cpp
-cstdio
+stdio.h
 -
-cstdlib
+stdlib.h
 -
 Execute.h
 /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.h
-dbms/dbms.h
-/home/lizhe/codes/DB/mydb/src/sql_parser/dbms/dbms.h
+../dbms/dbms.h
+/home/lizhe/codes/DB/mydb/src/dbms/dbms.h
+../backend/table.h
+/home/lizhe/codes/DB/mydb/src/backend/table.h
+Expression.h
+/home/lizhe/codes/DB/mydb/src/sql_parser/Expression.h
 
 /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.h
 type_def.h
