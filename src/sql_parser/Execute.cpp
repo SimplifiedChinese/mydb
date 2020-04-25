@@ -110,12 +110,6 @@ void execute_drop_db(const char *db_name)
 	free((char*)db_name);
 }
 
-void execute_show_database(const char *db_name)
-{
-	dbms::get_instance()->show_database(db_name);
-	free((void*)db_name);
-}
-
 void execute_drop_table(const char *table_name)
 {
 	dbms::get_instance()->drop_table(table_name);
@@ -134,6 +128,7 @@ void execute_quit()
 	printf("[exit] good bye!\n");
 }
 
+// 准备写这些东西
 void execute_desc_tables(const char *table_name){}
 void execute_show_tables(){}
 void execute_insert_row(struct insert_argu *stmt){}
