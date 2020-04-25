@@ -7,7 +7,7 @@
 dbms::dbms()
 	: output_file(stdout), cur_db(nullptr)
 {
-	printf("dbms初始化成功！\n");
+	printf("DBMS初始化成功！\n");
 }
 
 dbms::~dbms()
@@ -29,20 +29,21 @@ void dbms::show_database(const char *db_name)
 {
 	database db;
 	db.open(db_name);
-	db.show_info();
+	// db.show_info();
 }
 
 void dbms::switch_database(const char *db_name)
 {
 	if(cur_db)
 	{
-		cur_db->close();
+		if(cur_db->is_opened()) cur_db->close();
 		delete cur_db;
 		cur_db = nullptr;
 	}
 
 	cur_db = new database();
 	cur_db->open(db_name);
+	// cur_db->show_info();
 }
 
 void dbms::create_database(const char *db_name)

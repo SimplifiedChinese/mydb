@@ -18,24 +18,29 @@ database::~database()
 void database::open(const char *db_name)
 {
 	assert(!is_opened());
-	printf("打开数据库文件%s\n", db_name);
+	printf("尝试打开数据库文件%s\n", db_name);
 	std::string filename = db_name;
 	filename += ".database";
 	std::ifstream ifs(filename, std::ios::binary);
-	ifs.read((char*)&info, sizeof(info));
-	std::memset(tables, 0, sizeof(tables));
-	for(int i = 0; i < info.table_num; ++i)
-	{
-		tables[i] = new table_manager;
-		tables[i]->open(info.table_name[i]);
+	if(ifs.good()){
+		ifs.read((char*)&info, sizeof(info));
+		std::memset(tables, 0, sizeof(tables));
+		for(int i = 0; i < info.table_num; ++i)
+		{
+			tables[i] = new table_manager;
+			tables[i]->open(info.table_name[i]);
+		}
+		opened = true;
+		show_info();
 	}
-	opened = true;
+	else
+		printf("该数据库文件不存在！\n");
 }
 
 void database::create(const char *db_name)
 {
 	assert(!is_opened());
-	printf("模拟创建数据库文件%s\n", db_name);
+	printf("正在创建数据库文件%s\n", db_name);
 	std::memset(&info, 0, sizeof(info));
 	std::memset(tables, 0, sizeof(tables));
 	std::strncpy(info.db_name, db_name, MAX_NAME_LEN);
