@@ -1,0 +1,90 @@
+[33mcommit 7269188d2135dcab576f7a1a9a003c35ff3e702a[m
+Author: SimplifiedChinese <lizheacd@qq.com>
+Date:   Sat Apr 25 10:17:13 2020 +0800
+
+    修复了一些bug：该bug导致输入不存在的数据库后，正确的数据库无法打开
+
+[1mdiff --git a/build/src/.database b/build/src/.database[m
+[1mnew file mode 100644[m
+[1mindex 0000000..207126f[m
+Binary files /dev/null and b/build/src/.database differ
+[1mdiff --git a/build/src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o b/build/src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o[m
+[1mindex d5e3a33..a8a09f2 100644[m
+Binary files a/build/src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o and b/build/src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o differ
+[1mdiff --git a/build/src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o b/build/src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o[m
+[1mindex 7e7c953..fb319e6 100644[m
+Binary files a/build/src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o and b/build/src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o differ
+[1mdiff --git a/build/src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o b/build/src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o[m
+[1mindex f91be93..6d3b6ad 100644[m
+Binary files a/build/src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o and b/build/src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o differ
+[1mdiff --git a/build/src/libmydb_lib.a b/build/src/libmydb_lib.a[m
+[1mindex ba2bbb4..ad8282b 100644[m
+Binary files a/build/src/libmydb_lib.a and b/build/src/libmydb_lib.a differ
+[1mdiff --git a/build/src/mydb b/build/src/mydb[m
+[1mindex 974e432..ef3af77 100755[m
+Binary files a/build/src/mydb and b/build/src/mydb differ
+[1mdiff --git a/build/src/you.database b/build/src/you.database[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5b7d26d[m
+Binary files /dev/null and b/build/src/you.database differ
+[1mdiff --git a/src/backend/database.cpp b/src/backend/database.cpp[m
+[1mindex 93e5f0f..102c41c 100644[m
+[1m--- a/src/backend/database.cpp[m
+[1m+++ b/src/backend/database.cpp[m
+[36m@@ -18,24 +18,29 @@[m [mdatabase::~database()[m
+ void database::open(const char *db_name)[m
+ {[m
+ 	assert(!is_opened());[m
+[31m-	printf("打开数据库文件%s\n", db_name);[m
+[32m+[m	[32mprintf("尝试打开数据库文件%s\n", db_name);[m
+ 	std::string filename = db_name;[m
+ 	filename += ".database";[m
+ 	std::ifstream ifs(filename, std::ios::binary);[m
+[31m-	ifs.read((char*)&info, sizeof(info));[m
+[31m-	std::memset(tables, 0, sizeof(tables));[m
+[31m-	for(int i = 0; i < info.table_num; ++i)[m
+[31m-	{[m
+[31m-		tables[i] = new table_manager;[m
+[31m-		tables[i]->open(info.table_name[i]);[m
+[32m+[m	[32mif(ifs.good()){[m
+[32m+[m		[32mifs.read((char*)&info, sizeof(info));[m
+[32m+[m		[32mstd::memset(tables, 0, sizeof(tables));[m
+[32m+[m		[32mfor(int i = 0; i < info.table_num; ++i)[m
+[32m+[m		[32m{[m
+[32m+[m			[32mtables[i] = new table_manager;[m
+[32m+[m			[32mtables[i]->open(info.table_name[i]);[m
+[32m+[m		[32m}[m
+[32m+[m		[32mopened = true;[m
+[32m+[m		[32mshow_info();[m
+ 	}[m
+[31m-	opened = true;[m
+[32m+[m	[32melse[m
+[32m+[m		[32mprintf("该数据库文件不存在！\n");[m
+ }[m
+ [m
+ void database::create(const char *db_name)[m
+ {[m
+ 	assert(!is_opened());[m
+[31m-	printf("模拟创建数据库文件%s\n", db_name);[m
+[32m+[m	[32mprintf("正在创建数据库文件%s\n", db_name);[m
+ 	std::memset(&info, 0, sizeof(info));[m
+ 	std::memset(tables, 0, sizeof(tables));[m
+ 	std::strncpy(info.db_name, db_name, MAX_NAME_LEN);[m
+[1mdiff --git a/src/dbms/dbms.cpp b/src/dbms/dbms.cpp[m
+[1mindex 7b55fbf..b4f2779 100644[m
+[1m--- a/src/dbms/dbms.cpp[m
+[1m+++ b/src/dbms/dbms.cpp[m
+[36m@@ -7,7 +7,7 @@[m
+ dbms::dbms()[m
+ 	: output_file(stdout), cur_db(nullptr)[m
+ {[m
+[31m-	printf("dbms初始化成功！\n");[m
+[32m+[m	[32mprintf("DBMS初始化成功！\n");[m
+ }[m
+ [m
+ dbms::~dbms()[m
+[36m@@ -29,20 +29,21 @@[m [mvoid dbms::show_database(const char *db_name)[m
+ {[m
+ 	database db;[m
+ 	db.open(db_name);[m
+[31m-	db.s
