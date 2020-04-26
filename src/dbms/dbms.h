@@ -25,6 +25,7 @@ public:
 	void create_table(const table_header_t *header);
 	void show_table(const char *table_name);
 	void drop_table(const char *table_name);
+    void desc_table(const char *table_name);
 
 	// void insert_rows(const insert_info_t *info);
 	// void delete_rows(const delete_info_t *info);

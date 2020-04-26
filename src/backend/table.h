@@ -24,6 +24,8 @@ public:
 	void drop();
 	void close();
 
+	void dump_table_info() { header.dump(); }
+
 private:
 
 };

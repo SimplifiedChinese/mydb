@@ -58,36 +58,7 @@
 // 	free(cref);
 // }
 
-bool fill_table_header(table_header_t *header, const table_def *table);
 
-
-void execute_create_tb(const table_def *table)
-{
-	table_header_t *header = new table_header_t;
-	if(fill_table_header(header, table))
-		dbms::get_instance()->create_table(header);
-	else std::fprintf(stderr, "[Error] Fail to create table!\n");
-	delete header;
-
-	// free(table->name);
-	// free_linked_list<table_constraint_t>(table->constraints, [](table_constraint_t *data) {
-	// 	expression::free_exprnode(data->check_cond);
-	// 	free_column_ref(data->column_ref);
-	// 	free_column_ref(data->foreign_column_ref);
-	// 	free(data);
-	// } );
-
-	// for(field_item_t *it = table->fields; it; )
-	// {
-	// 	field_item_t *tmp = it;
-	// 	free(it->name);
-	// 	expression::free_exprnode(it->default_value);
-	// 	it = it->next;
-	// 	free(tmp);
-	// }
-
-	// free((void*)table);
-}
 void report_sql_error(const char *error_name, const char *msg) {
     printf("SQL Error[%s]: %s\n", error_name, msg);
 }
@@ -122,14 +93,47 @@ void execute_show_table(const char *table_name)
 	free((void*)table_name);
 }
 
+bool fill_table_header(table_header_t *header, const table_def *table);
+void execute_create_tb(const table_def *table)
+{
+	table_header_t *header = new table_header_t;
+	if(fill_table_header(header, table))
+		dbms::get_instance()->create_table(header);
+	else std::fprintf(stderr, "[Error] Fail to create table!\n");
+	delete header;
+
+	// free(table->name);
+	// free_linked_list<table_constraint_t>(table->constraints, [](table_constraint_t *data) {
+	// 	expression::free_exprnode(data->check_cond);
+	// 	free_column_ref(data->column_ref);
+	// 	free_column_ref(data->foreign_column_ref);
+	// 	free(data);
+	// } );
+
+	// for(field_item_t *it = table->fields; it; )
+	// {
+	// 	field_item_t *tmp = it;
+	// 	free(it->name);
+	// 	expression::free_exprnode(it->default_value);
+	// 	it = it->next;
+	// 	free(tmp);
+	// }
+
+	// free((void*)table);
+}
+
 void execute_quit()
 {
 	dbms::get_instance()->close_database();
 	printf("[exit] good bye!\n");
 }
 
+void execute_desc_tables(const char *table_name) {
+    dbms::get_instance()->desc_table(table_name);
+    free((void *) table_name);
+}
+
 // 准备写这些东西
-void execute_desc_tables(const char *table_name){}
 void execute_show_tables(){}
 void execute_insert_row(struct insert_argu *stmt){}
 void execute_sql_eof(void){}
