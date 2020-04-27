@@ -5,58 +5,53 @@
 #include "../backend/table.h"
 #include "Expression.h"
 
-// template<typename T, typename DataDeleter>
-// void free_linked_list(linked_list_t *linked_list, DataDeleter data_deleter)
-// {
-// 	for(linked_list_t *l_ptr = linked_list; l_ptr; )
-// 	{
-// 		T* data = (T*)l_ptr->data;
-// 		data_deleter(data);
-// 		linked_list_t *tmp = l_ptr;
-// 		l_ptr = l_ptr->next;
-// 		free(tmp);
-// 	}
-// }
+void free_column_ref(column_ref *c) {
+    if (c->table)
+        free(c->table);
+    free(c->column);
+    free(c);
+}
 
-// void expression::free_exprnode(expr_node_t *expr)
-// {
-// 	if(!expr) return;
-// 	if(expr->op == OPERATOR_NONE)
-// 	{
-// 		switch(expr->term_type)
-// 		{
-// 			case TERM_STRING:
-// 				free(expr->val_s);
-// 				break;
-// 			case TERM_COLUMN_REF:
-// 				free(expr->column_ref->table);
-// 				free(expr->column_ref->column);
-// 				free(expr->column_ref);
-// 				break;
-// 			case TERM_LITERAL_LIST:
-// 				free_linked_list<expr_node_t>(
-// 					expr->literal_list,
-// 					expression::free_exprnode
-// 				);
-// 				break;
-// 			default:
-// 				break;
-// 		}
-// 	} else {
-// 		free_exprnode(expr->left);
-// 		free_exprnode(expr->right);
-// 	}
+void free_column_list(linked_list *cols) {
+    while (cols) {
+        auto c = (column_ref *) cols->data;
+        free_column_ref(c);
+        linked_list *t = cols;
+        cols = cols->next;
+        free(t);
+    }
+}
 
-// 	free(expr);
-// }
+void free_expr_list(linked_list *exprs) {
+    while (exprs) {
+        auto e = (expr_node *) exprs->data;
+        free_expr(e);
+        linked_list *t = exprs;
+        exprs = exprs->next;
+        free(t);
+    }
 
-// void free_column_ref(column_ref_t *cref)
-// {
-// 	if(!cref) return;
-// 	free(cref->column);
-// 	free(cref->table);
-// 	free(cref);
-// }
+}
+
+void free_values(linked_list *values) {
+    while (values) {
+        auto exprs = (linked_list *) values->data;
+        free_expr_list(exprs);
+        linked_list *t = values;
+        values = values->next;
+        free(t);
+    }
+}
+
+void free_tables(linked_list *tables) {
+    while (tables) {
+        auto table_name = (char *) tables->data;
+        free(table_name);
+        linked_list *t = tables;
+        tables = tables->next;
+        free(t);
+    }
+}
 
 
 void report_sql_error(const char *error_name, const char *msg) {
@@ -133,8 +128,11 @@ void execute_desc_tables(const char *table_name) {
     free((void *) table_name);
 }
 
+void execute_show_tables() {
+    dbms::get_instance()->list_tables();
+}
+
 // 准备写这些东西
-void execute_show_tables(){}
 void execute_insert_row(struct insert_argu *stmt){}
 void execute_sql_eof(void){}
 void execute_select(struct select_argu *stmt){}

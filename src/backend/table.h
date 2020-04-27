@@ -6,6 +6,13 @@
 struct table_header_t
 {   
     char table_name[MAX_NAME_LEN];
+
+	uint8_t col_num;
+	char col_name[MAX_COLUMN_SIZE][MAX_NAME_LEN];	
+	uint8_t col_type[MAX_COLUMN_SIZE];
+	int col_length[MAX_COLUMN_SIZE];
+	int col_offset[MAX_COLUMN_SIZE];
+
 	void dump();
 };
 

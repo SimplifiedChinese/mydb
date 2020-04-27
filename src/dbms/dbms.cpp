@@ -107,6 +107,11 @@ void dbms::desc_table(const char* table_name)
 	}
 }
 
+void dbms::list_tables() {
+    if (assert_db_open())
+        cur_db->show_info();
+}
+
 bool dbms::assert_db_open()
 {
 	if(cur_db && cur_db->is_opened())
