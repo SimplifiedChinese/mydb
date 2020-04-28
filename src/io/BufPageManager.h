@@ -56,13 +56,13 @@ private:
     }
 
 public:
-    static BufPageManager &getInstance() {
+    static BufPageManager &get_instance() {
         static BufPageManager instance;
         return instance;
     }
 
     static FileManager &getFileManager() {
-        return *(getInstance().fileManager);
+        return *(get_instance().fileManager);
     }
 
     int allocPage(int fileID, int pageID, bool ifRead = false) {

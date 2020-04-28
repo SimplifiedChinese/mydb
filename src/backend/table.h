@@ -13,14 +13,18 @@ struct table_header_t
 	int col_length[MAX_COLUMN_SIZE];
 	int col_offset[MAX_COLUMN_SIZE];
 
+	uint32_t flag_default;
+	char default_values[MAX_COLUMN_SIZE][MAX_DEFAULT_LEN];
+
 	void dump();
 };
 
 class table_manager
 {
-	bool is_open, is_mirror;
+	bool is_open;
 	table_header_t header;
 	std::string tname;
+	int fileID, permID;
 	const char *error_msg;
 
 public:
