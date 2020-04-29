@@ -5,6 +5,7 @@ src/CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o
  /home/lizhe/codes/DB/mydb/src/backend/Compare.cpp
  /home/lizhe/codes/DB/mydb/src/backend/Compare.h
 src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o
+ /home/lizhe/codes/DB/mydb/src/backend/Compare.h
  /home/lizhe/codes/DB/mydb/src/backend/database.cpp
  /home/lizhe/codes/DB/mydb/src/backend/database.h
  /home/lizhe/codes/DB/mydb/src/backend/table.h
@@ -25,12 +26,14 @@ src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o
  /home/lizhe/codes/DB/mydb/src/util/HashMap.h
  /home/lizhe/codes/DB/mydb/src/util/MultiList.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o
+ /home/lizhe/codes/DB/mydb/src/backend/Compare.h
  /home/lizhe/codes/DB/mydb/src/backend/database.h
  /home/lizhe/codes/DB/mydb/src/backend/table.h
  /home/lizhe/codes/DB/mydb/src/constants.h
  /home/lizhe/codes/DB/mydb/src/dbms/dbms.cpp
  /home/lizhe/codes/DB/mydb/src/dbms/dbms.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o
+ /home/lizhe/codes/DB/mydb/src/backend/Compare.h
  /home/lizhe/codes/DB/mydb/src/backend/database.h
  /home/lizhe/codes/DB/mydb/src/backend/table.h
  /home/lizhe/codes/DB/mydb/src/constants.h

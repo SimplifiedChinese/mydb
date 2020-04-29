@@ -4,6 +4,7 @@
 src/CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o: ../src/backend/Compare.cpp
 src/CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o: ../src/backend/Compare.h
 
+src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o: ../src/backend/Compare.h
 src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o: ../src/backend/database.cpp
 src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o: ../src/backend/database.h
 src/CMakeFiles/mydb_lib.dir/backend/database.cpp.o: ../src/backend/table.h
@@ -24,12 +25,14 @@ src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/sql_parser/type_def.h
 src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/util/HashMap.h
 src/CMakeFiles/mydb_lib.dir/backend/table.cpp.o: ../src/util/MultiList.h
 
+src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/backend/Compare.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/backend/database.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/backend/table.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/constants.h
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/dbms/dbms.cpp
 src/CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o: ../src/dbms/dbms.h
 
+src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/backend/Compare.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/backend/database.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/backend/table.h
 src/CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o: ../src/constants.h

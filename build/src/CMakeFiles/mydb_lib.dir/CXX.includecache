@@ -9,8 +9,6 @@
 ../src/constants.h
 
 /home/lizhe/codes/DB/mydb/src/backend/Compare.cpp
-string
--
 cstring
 -
 cassert
@@ -19,6 +17,8 @@ Compare.h
 /home/lizhe/codes/DB/mydb/src/backend/Compare.h
 
 /home/lizhe/codes/DB/mydb/src/backend/Compare.h
+string
+-
 
 /home/lizhe/codes/DB/mydb/src/backend/RegisterManager.h
 map
@@ -67,8 +67,8 @@ table.h
 /home/lizhe/codes/DB/mydb/src/io/BufPageManager.h
 RegisterManager.h
 /home/lizhe/codes/DB/mydb/src/backend/RegisterManager.h
-Compare.h
-/home/lizhe/codes/DB/mydb/src/backend/Compare.h
+assert.h
+-
 cstdio
 -
 cassert
@@ -85,6 +85,8 @@ fstream
 /home/lizhe/codes/DB/mydb/src/backend/table.h
 ../constants.h
 /home/lizhe/codes/DB/mydb/src/constants.h
+Compare.h
+/home/lizhe/codes/DB/mydb/src/backend/Compare.h
 string
 -
 

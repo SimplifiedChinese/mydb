@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/lizhe/codes/DB/mydb/src/backend/Compare.h
+string
+-
+
 /home/lizhe/codes/DB/mydb/src/backend/database.h
 ../constants.h
 /home/lizhe/codes/DB/mydb/src/constants.h
@@ -23,6 +27,8 @@ vector
 /home/lizhe/codes/DB/mydb/src/backend/table.h
 ../constants.h
 /home/lizhe/codes/DB/mydb/src/constants.h
+Compare.h
+/home/lizhe/codes/DB/mydb/src/backend/Compare.h
 string
 -
 

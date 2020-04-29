@@ -4,7 +4,7 @@
 #include "../io/FileManager.h"
 #include "../io/BufPageManager.h"
 #include "RegisterManager.h"
-#include "Compare.h"
+#include <assert.h>
 #include <cstdio>
 #include <cassert>
 #include <cstdio>
@@ -90,7 +90,7 @@ bool table_manager::open(const char *table_name)
     this->tname = std::string(table_name);
     fileID = BufPageManager::getFileManager().openFile(table_name);
     permID = BufPageManager::getFileManager().getFilePermID(fileID);
-    //RegisterManager::get_instance().checkIn(permID, this);
+    RegisterManager::get_instance().checkIn(permID, this);
     int index = BufPageManager::get_instance().getPage(fileID, 0);
     memcpy(&header, BufPageManager::get_instance().access(index), sizeof(table_header_t));;
     // for (auto &col: colIndex) {
@@ -107,8 +107,8 @@ bool table_manager::create(const char *table_name, const table_header_t *header)
     fileID = BufPageManager::getFileManager().openFile(table_name);
     permID = BufPageManager::getFileManager().getFilePermID(fileID);
     BufPageManager::get_instance().allocPage(fileID, 0);
-
-	
+	RegisterManager::get_instance().checkIn(permID, this);
+	this->header = *header;
 	return is_open = true;
 }
 
@@ -116,6 +116,7 @@ void table_manager::drop()
 {
 	if(!is_open) return;
 	close();
+	RegisterManager::get_instance().checkIn(permID, this);
     BufPageManager::get_instance().closeFile(fileID, false);
     BufPageManager::getFileManager().closeFile(fileID);
 }
@@ -123,10 +124,51 @@ void table_manager::drop()
 void table_manager::close()
 {
 	if(!is_open) return;
-
+    RegisterManager::get_instance().checkIn(permID, this);
     BufPageManager::get_instance().closeFile(fileID);
     BufPageManager::getFileManager().closeFile(fileID);
 	is_open = false;
+}
+
+int table_manager::addColumn(const char *name, ColumnType type, int size,
+                  bool notNull, bool hasDefault, const char *data){
+	printf("adding %s %d %d\n", name, type, size);
+    for (int i = 0; i < header.col_num; i++)
+        if (strcmp(header.col_name[i], name) == 0)
+            return -1;	
+	assert(header.col_num < MAX_COLUMN_SIZE);
+    int id = header.col_num++;
+	strcpy(header.col_name[id], name);
+    header.col_type[id] = type;
+    header.col_offset[id] = header.recordByte;
+    header.col_length[id] = size;
+	header.defaultOffset[id] = -1;
+    switch (type) {
+        case CT_INT:
+        case CT_FLOAT:
+        case CT_DATE:
+            header.recordByte += 4;
+            if (hasDefault) {
+                header.defaultOffset[id] = header.dataArrUsed;
+                memcpy(header.dataArr + header.dataArrUsed, data, 4);
+                header.dataArrUsed += 4;
+            }
+            break;
+        case CT_VARCHAR:
+            header.recordByte += size + 1;
+            header.recordByte += 4 - header.recordByte % 4;
+            if (hasDefault) {
+                header.defaultOffset[id] = header.dataArrUsed;
+                strcpy(header.dataArr + header.dataArrUsed, data);
+                header.dataArrUsed += strlen(data) + 1;
+            }
+            break;
+        default:
+            assert(0);
+    }
+    assert(header.dataArrUsed <= MAX_DATA_SIZE);
+    assert(header.recordByte <= PAGE_SIZE);
+    return id;
 }
 
 void table_header_t::dump()

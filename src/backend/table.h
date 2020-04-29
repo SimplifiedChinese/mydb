@@ -1,6 +1,7 @@
 #ifndef __TABLE_H__
 #define __TABLE_H__
 #include "../constants.h"
+#include "Compare.h"
 #include <string>
 
 struct table_header_t
@@ -15,6 +16,10 @@ struct table_header_t
 
 	uint32_t flag_default;
 	char default_values[MAX_COLUMN_SIZE][MAX_DEFAULT_LEN];
+
+	int page_num, recordByte, dataArrUsed;
+	int defaultOffset[MAX_COLUMN_SIZE];
+	char dataArr[MAX_DATA_SIZE];
 
 	void dump();
 };
@@ -34,6 +39,8 @@ public:
 	bool open(const char *table_name);
 	void drop();
 	void close();
+	int addColumn(const char *name, ColumnType type, int size,
+                  bool notNull, bool hasDefault, const char *data);
 
 	void dump_table_info() { header.dump(); }
 

@@ -1,5 +1,6 @@
 #ifndef __COMPARE_H__
 #define __COMPARE_H__
+#include<string>
 
 enum ColumnType {
     CT_INT, CT_VARCHAR, CT_FLOAT, CT_DATE
