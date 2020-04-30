@@ -109,6 +109,7 @@ bool table_manager::create(const char *table_name, const table_header_t *header)
     BufPageManager::get_instance().allocPage(fileID, 0);
 	RegisterManager::get_instance().checkIn(permID, this);
 	this->header = *header;
+	addColumn("RID", CT_INT, 10, true, false, nullptr);
 	return is_open = true;
 }
 

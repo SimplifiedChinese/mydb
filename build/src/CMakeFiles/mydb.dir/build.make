@@ -60,15 +60,15 @@ include src/CMakeFiles/mydb.dir/flags.make
 src/CMakeFiles/mydb.dir/main.cpp.o: src/CMakeFiles/mydb.dir/flags.make
 src/CMakeFiles/mydb.dir/main.cpp.o: ../src/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lizhe/codes/DB/mydb/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/mydb.dir/main.cpp.o"
-	cd /home/lizhe/codes/DB/mydb/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mydb.dir/main.cpp.o -c /home/lizhe/codes/DB/mydb/src/main.cpp
+	cd /home/lizhe/codes/DB/mydb/build/src && /bin/g++-6  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mydb.dir/main.cpp.o -c /home/lizhe/codes/DB/mydb/src/main.cpp
 
 src/CMakeFiles/mydb.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mydb.dir/main.cpp.i"
-	cd /home/lizhe/codes/DB/mydb/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lizhe/codes/DB/mydb/src/main.cpp > CMakeFiles/mydb.dir/main.cpp.i
+	cd /home/lizhe/codes/DB/mydb/build/src && /bin/g++-6 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lizhe/codes/DB/mydb/src/main.cpp > CMakeFiles/mydb.dir/main.cpp.i
 
 src/CMakeFiles/mydb.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mydb.dir/main.cpp.s"
-	cd /home/lizhe/codes/DB/mydb/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lizhe/codes/DB/mydb/src/main.cpp -o CMakeFiles/mydb.dir/main.cpp.s
+	cd /home/lizhe/codes/DB/mydb/build/src && /bin/g++-6 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lizhe/codes/DB/mydb/src/main.cpp -o CMakeFiles/mydb.dir/main.cpp.s
 
 src/CMakeFiles/mydb.dir/main.cpp.o.requires:
 

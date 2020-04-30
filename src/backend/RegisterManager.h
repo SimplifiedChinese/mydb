@@ -3,6 +3,7 @@
 
 #include <map>
 #include <cassert>
+// #include<stdio.h>
 
 class table_manager;
 
@@ -25,6 +26,7 @@ public:
     }
 
     void checkIn(int permID, table_manager *table_manager) {
+        // printf("\n%d %d\n",list.find(permID),list.end());
         assert(list.find(permID) == list.end());
         list[permID] = table_manager;
     }

@@ -77,15 +77,15 @@ src/sql_parser/sql.yy.c: ../src/sql_parser/sql.l
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.o: src/sql_parser/CMakeFiles/SqlParser.dir/flags.make
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.o: src/sql_parser/sql.tab.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lizhe/codes/DB/mydb/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.o"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SqlParser.dir/sql.tab.c.o   -c /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SqlParser.dir/sql.tab.c.o   -c /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SqlParser.dir/sql.tab.c.i"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c > CMakeFiles/SqlParser.dir/sql.tab.c.i
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c > CMakeFiles/SqlParser.dir/sql.tab.c.i
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SqlParser.dir/sql.tab.c.s"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c -o CMakeFiles/SqlParser.dir/sql.tab.c.s
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.tab.c -o CMakeFiles/SqlParser.dir/sql.tab.c.s
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.tab.c.o.requires:
 
@@ -102,15 +102,15 @@ src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.o: src/sql_parser/CMakeFiles/Sq
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.o: src/sql_parser/sql.yy.c
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.o: src/sql_parser/sql.tab.h
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lizhe/codes/DB/mydb/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.o"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SqlParser.dir/sql.yy.c.o   -c /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SqlParser.dir/sql.yy.c.o   -c /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SqlParser.dir/sql.yy.c.i"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c > CMakeFiles/SqlParser.dir/sql.yy.c.i
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c > CMakeFiles/SqlParser.dir/sql.yy.c.i
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SqlParser.dir/sql.yy.c.s"
-	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c -o CMakeFiles/SqlParser.dir/sql.yy.c.s
+	cd /home/lizhe/codes/DB/mydb/build/src/sql_parser && /bin/gcc-6 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lizhe/codes/DB/mydb/build/src/sql_parser/sql.yy.c -o CMakeFiles/SqlParser.dir/sql.yy.c.s
 
 src/sql_parser/CMakeFiles/SqlParser.dir/sql.yy.c.o.requires:
 
