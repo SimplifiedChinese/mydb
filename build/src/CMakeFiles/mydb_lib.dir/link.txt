@@ -1,2 +1,0 @@
-/bin/ar qc libmydb_lib.a  CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o CMakeFiles/mydb_lib.dir/backend/database.cpp.o CMakeFiles/mydb_lib.dir/backend/table.cpp.o CMakeFiles/mydb_lib.dir/dbms/dbms.cpp.o CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o
-/bin/ranlib libmydb_lib.a

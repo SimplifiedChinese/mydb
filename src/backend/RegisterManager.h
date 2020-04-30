@@ -5,11 +5,11 @@
 #include <cassert>
 // #include<stdio.h>
 
-class table_manager;
+class Table;
 
 class RegisterManager {
 private:
-    std::map<int, table_manager *> list;
+    std::map<int, Table *> list;
 
     RegisterManager() = default;
 
@@ -20,18 +20,18 @@ public:
 
     RegisterManager &operator=(RegisterManager const &) = delete;
 
-    static RegisterManager &get_instance() {
+    static RegisterManager &getInstance() {
         static RegisterManager instance;
         return instance;
     }
 
-    void checkIn(int permID, table_manager *table_manager) {
+    void checkIn(int permID, Table *table) {
         // printf("\n%d %d\n",list.find(permID),list.end());
         assert(list.find(permID) == list.end());
-        list[permID] = table_manager;
+        list[permID] = table;
     }
 
-    table_manager *getPtr(int permID) {
+    Table *getPtr(int permID) {
         assert(list.find(permID) != list.end());
         return list[permID];
     }

@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "Execute.h"
-#include "../dbms/dbms.h"
-#include "../backend/table.h"
-#include "Expression.h"
+
+#include "dbms/DBMS.h"
 
 void free_column_ref(column_ref *c) {
     if (c->table)
@@ -53,90 +52,115 @@ void free_tables(linked_list *tables) {
     }
 }
 
-
 void report_sql_error(const char *error_name, const char *msg) {
     printf("SQL Error[%s]: %s\n", error_name, msg);
 }
 
-void execute_create_db(const char *db_name)
-{
-	dbms::get_instance()->create_database(db_name);
-	free((char*)db_name);
-}
-
-void execute_use_db(const char *db_name)
-{
-	dbms::get_instance()->switch_database(db_name);
-	free((char*)db_name);
-}
-
-void execute_drop_db(const char *db_name)
-{
-	dbms::get_instance()->drop_database(db_name);
-	free((char*)db_name);
-}
-
-void execute_drop_table(const char *table_name)
-{
-	dbms::get_instance()->drop_table(table_name);
-	free((void*)table_name);
-}
-
-void execute_show_table(const char *table_name)
-{
-	dbms::get_instance()->show_table(table_name);
-	free((void*)table_name);
-}
-
-bool fill_table_header(table_header_t *header, const table_def *table);
-void execute_create_tb(const table_def *table)
-{
-	table_header_t *header = new table_header_t;
-	if(fill_table_header(header, table))
-		dbms::get_instance()->create_table(header);
-	else std::fprintf(stderr, "[Error] Fail to create table!\n");
-	delete header;
-
-	// free(table->name);
-	// free_linked_list<table_constraint_t>(table->constraints, [](table_constraint_t *data) {
-	// 	expression::free_exprnode(data->check_cond);
-	// 	free_column_ref(data->column_ref);
-	// 	free_column_ref(data->foreign_column_ref);
-	// 	free(data);
-	// } );
-
-	// for(field_item_t *it = table->fields; it; )
-	// {
-	// 	field_item_t *tmp = it;
-	// 	free(it->name);
-	// 	expression::free_exprnode(it->default_value);
-	// 	it = it->next;
-	// 	free(tmp);
-	// }
-
-	// free((void*)table);
-}
-
-void execute_quit()
-{
-	dbms::get_instance()->close_database();
-	printf("[exit] good bye!\n");
-}
-
 void execute_desc_tables(const char *table_name) {
-    dbms::get_instance()->desc_table(table_name);
+    DBMS::getInstance()->descTable(table_name);
     free((void *) table_name);
 }
 
 void execute_show_tables() {
-    dbms::get_instance()->list_tables();
+    DBMS::getInstance()->listTables();
 }
 
-// 准备写这些东西
-void execute_insert_row(struct insert_argu *stmt){}
-void execute_sql_eof(void){}
-void execute_select(struct select_argu *stmt){}
-void execute_delete(struct delete_argu *stmt){}
-void execute_update(struct update_argu *stmt){}
-void execute_drop_idx(struct column_ref *tb_col){}
-void execute_create_idx(struct column_ref *tb_col){}
+void execute_create_db(const char *db_name) {
+    Database db;
+    db.create(db_name);
+    db.close();
+    free((void *) db_name);
+}
+
+void execute_create_tb(const table_def *table) {
+    DBMS::getInstance()->createTable(table);
+    free((void *) table->name);
+    column_defs *c = table->columns;
+    while (c) {
+        column_defs *next = c->next;
+        free((void *) c->name);
+        free((void *) c);
+        c = next;
+    }
+    linked_list *cons = table->constraints;
+    while (cons) {
+        linked_list *next = cons->next;
+        auto *tc = (table_constraint *) (cons->data);
+        switch(tc->type){
+            case CONSTRAINT_FOREIGN_KEY:
+                free(tc->foreign_column_name);
+                free(tc->foreign_table_name);
+                break;
+            case CONSTRAINT_PRIMARY_KEY:
+                free_tables(tc->values);
+                break;
+            case CONSTRAINT_CHECK:
+                free(tc->column_name);
+                free_expr_list(tc->values);
+                break;
+        }
+        free(tc);
+        free(cons);
+        cons = next;
+    }
+
+}
+
+void execute_drop_db(const char *db_name) {
+    DBMS::getInstance()->dropDB(db_name);
+    free((void *) db_name);
+}
+
+void execute_drop_table(const char *table_name) {
+    DBMS::getInstance()->dropTable(table_name);
+    free((void *) table_name);
+}
+
+void execute_use_db(const char *db_name) {
+    DBMS::getInstance()->switchToDB(db_name);
+    free((void *) db_name);
+}
+
+void execute_insert_row(struct insert_argu *stmt) {
+    // assert(stmt->table);
+    // DBMS::getInstance()->insertRow(stmt->table, stmt->columns, stmt->values);
+    // free_column_list(stmt->columns);
+    // free_values(stmt->values);
+    // free((void *) stmt->table);
+}
+
+void execute_select(struct select_argu *stmt) {
+    // DBMS::getInstance()->selectRow(stmt->tables, stmt->column_expr, stmt->where);
+    // free_tables(stmt->tables);
+    // free_expr_list(stmt->column_expr);
+    // if (stmt->where)
+    //     free(stmt->where);
+}
+
+void execute_delete(struct delete_argu *stmt) {
+    // DBMS::getInstance()->deleteRow(stmt->table, stmt->where);
+    // free(stmt->table);
+    // if (stmt->where)
+    //     free_expr(stmt->where);
+}
+
+void execute_update(struct update_argu *stmt) {
+    // DBMS::getInstance()->updateRow(stmt->table, stmt->where, stmt->column, stmt->val_expr);
+    // free(stmt->table);
+    // if (stmt->where)
+    //     free_expr(stmt->where);
+    // free_column_ref(stmt->column);
+    // free_expr(stmt->val_expr);
+}
+
+void execute_drop_idx(struct column_ref *tb_col) {
+
+}
+
+void execute_create_idx(struct column_ref *tb_col) {
+
+}
+
+void execute_sql_eof() {
+    DBMS::getInstance()->exit();
+}

@@ -1,5 +1,5 @@
 #include <cstring>
-#include "dbms/dbms.h"
+#include "dbms/DBMS.h"
 
 #ifdef __cplusplus
 extern "C" char start_parse(const char *expr_input);
@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]) {
         if (argc == 3 && strcmp("init", argv[2]) == 0) {
             initMode = true;
         }
-        dbms::get_instance()->switch_database(argv[1]); //first parameter is Database name
+        DBMS::getInstance()->switchToDB(argv[1]); //first parameter is Database name
         return start_parse(nullptr);
     }
 }
