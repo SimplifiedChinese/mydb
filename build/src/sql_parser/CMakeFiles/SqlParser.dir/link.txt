@@ -1,0 +1,2 @@
+/bin/ar qc libSqlParser.a  CMakeFiles/SqlParser.dir/sql.tab.c.o CMakeFiles/SqlParser.dir/sql.yy.c.o
+/bin/ranlib libSqlParser.a
