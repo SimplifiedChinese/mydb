@@ -108,3 +108,163 @@ int Table::addColumn(const char *name, ColumnType type, int size,
     assert(head.recordByte <= PAGE_SIZE);
     return id;
 }
+
+void Table::printSchema() {
+    for (int i = 1; i < head.columnTot; i++) {
+        printf("%s", head.columnName[i]);
+        switch (head.columnType[i]) {
+            case CT_INT:
+                printf(" INT(%d)", head.columnLen[i]);
+                break;
+            case CT_FLOAT:
+                printf(" FLOAT");
+                break;
+            case CT_DATE:
+                printf(" DATE");
+                break;
+            case CT_VARCHAR:
+                printf(" VARCHAR(%d)", head.columnLen[i]);
+                break;
+            default:
+                assert(0);
+        }
+        if (head.notNull & (1 << i)) printf(" NotNull");
+        if (head.hasIndex & (1 << i)) printf(" Indexed");
+        if (head.isPrimary & (1 << i)) printf(" Primary");
+        printf("\n");
+    }
+}
+
+void Table::initTempRecord() {
+    unsigned int &notNull = *(unsigned int *) buf;
+    notNull = 0;
+    for (int i = 0; i < head.columnTot; i++) {
+        if (head.defaultOffset[i] != -1) {
+            switch (head.columnType[i]) {
+                case CT_INT:
+                case CT_FLOAT:
+                case CT_DATE:
+                    memcpy(buf + head.columnOffset[i], head.dataArr + head.defaultOffset[i], 4);
+                    break;
+                case CT_VARCHAR:
+                    strcpy(buf + head.columnOffset[i], head.dataArr + head.defaultOffset[i]);
+                    break;
+                default:
+                    assert(false);
+            }
+            notNull |= (1u << i);
+        }
+    }
+}
+
+std::string Table::setTempRecord(int col, const char *data) {
+    if (data == nullptr) {
+        setTempRecordNull(col);
+        return "";
+    }
+    if (buf == nullptr) {
+        buf = new char[head.recordByte];
+        initTempRecord();
+    }
+    unsigned int &notNull = *(unsigned int *) buf;
+    switch (head.columnType[col]) {
+        case CT_INT:
+        case CT_DATE:
+        case CT_FLOAT:
+            memcpy(buf + head.columnOffset[col], data, 4);
+            break;
+        case CT_VARCHAR:
+            if ((unsigned int) head.columnLen[col] < strlen(data)) {
+                printf("%d %s\n", head.columnLen[col], data);
+            }
+            if (strlen(data) > (unsigned int) head.columnLen[col]) {
+                return "ERROR: varchar too long";
+            }
+            strcpy(buf + head.columnOffset[col], data);
+            break;
+        default:
+            assert(0);
+    }
+    notNull |= (1u << col);
+    return "";
+}
+
+void Table::setTempRecordNull(int col) {
+    if (buf == nullptr) {
+        buf = new char[head.recordByte];
+        initTempRecord();
+    }
+    unsigned int &notNull = *(unsigned int *) buf;
+    if (notNull & (1u << col)) notNull ^= (1u << col);
+}
+
+std::string Table::insertTempRecord() {
+    assert(buf != nullptr);
+    if (head.nextAvail == (RID_t) -1) {
+        allocPage();
+    }
+    int rid = head.nextAvail;
+    setTempRecord(0, (char *) &head.nextAvail);
+    auto error = checkRecord();
+    if (!error.empty()) {
+        printf("Error occurred when inserting record, aborting...\n");
+        return error;
+    }
+    int pageID = head.nextAvail / PAGE_SIZE;
+    int offset = head.nextAvail % PAGE_SIZE;
+    int index = BufPageManager::getInstance().getPage(fileID, pageID);
+    char *page = BufPageManager::getInstance().access(index);
+    head.nextAvail = *(unsigned int *) (page + offset);
+    memcpy(page + offset, buf, head.recordByte);
+    BufPageManager::getInstance().markDirty(index);
+    inverseFooter(page, offset / head.recordByte);
+    return "";
+}
+
+void Table::allocPage() {
+    auto index = BufPageManager::getInstance().allocPage(fileID, head.pageTot);
+    auto buf = BufPageManager::getInstance().access(index);
+    auto n = (PAGE_SIZE - PAGE_FOOTER_SIZE) / head.recordByte;
+    n = (n < MAX_REC_PER_PAGE) ? n : MAX_REC_PER_PAGE;
+    for (int i = 0, p = 0; i < n; i++, p += head.recordByte) {
+        unsigned int &ptr = *(unsigned int *) (buf + p);
+        ptr = head.nextAvail;
+        head.nextAvail = (unsigned int) head.pageTot * PAGE_SIZE + p;
+    }
+    memset(buf + PAGE_SIZE - PAGE_FOOTER_SIZE, 0, PAGE_FOOTER_SIZE);
+    BufPageManager::getInstance().markDirty(index);
+    head.pageTot++;
+}
+
+std::string Table::checkRecord() {
+    // 检查就简化一点点
+
+    // unsigned int &notNull = *(unsigned int *) buf;
+    // if ((notNull & head.notNull) != head.notNull) {
+    //     return "Insert Error: not null column is null.";
+    // }
+
+    // if (!initMode) {
+    //     if (!checkPrimary()) {
+    //         return "ERROR: Primary Key Conflict";
+    //     }
+    //     auto valueCheck = checkValueConstraint();
+    //     if (!valueCheck.empty()) {
+    //         return valueCheck;
+    //     }
+
+    //     auto foreignKeyCheck = checkForeignKeyConstraint();
+    //     if (!foreignKeyCheck.empty()) {
+    //         return foreignKeyCheck;
+    //     }
+    // }
+
+    return std::string();
+}
+
+void Table::inverseFooter(const char *page, int idx) {
+    int u = idx / 32;
+    int v = idx % 32;
+    unsigned int &tmp = *(unsigned int *) (page + PAGE_SIZE - PAGE_FOOTER_SIZE + u * 4);
+    tmp ^= (1u << v);
+}

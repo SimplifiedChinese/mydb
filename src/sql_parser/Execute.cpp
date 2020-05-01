@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 #include "Execute.h"
 
 #include "dbms/DBMS.h"
@@ -122,35 +123,35 @@ void execute_use_db(const char *db_name) {
 }
 
 void execute_insert_row(struct insert_argu *stmt) {
-    // assert(stmt->table);
-    // DBMS::getInstance()->insertRow(stmt->table, stmt->columns, stmt->values);
-    // free_column_list(stmt->columns);
-    // free_values(stmt->values);
-    // free((void *) stmt->table);
+    assert(stmt->table);
+    DBMS::getInstance()->insertRow(stmt->table, stmt->columns, stmt->values);
+    free_column_list(stmt->columns);
+    free_values(stmt->values);
+    free((void *) stmt->table);
 }
 
 void execute_select(struct select_argu *stmt) {
-    // DBMS::getInstance()->selectRow(stmt->tables, stmt->column_expr, stmt->where);
-    // free_tables(stmt->tables);
-    // free_expr_list(stmt->column_expr);
-    // if (stmt->where)
-    //     free(stmt->where);
+    DBMS::getInstance()->selectRow(stmt->tables, stmt->column_expr, stmt->where);
+    free_tables(stmt->tables);
+    free_expr_list(stmt->column_expr);
+    if (stmt->where)
+        free(stmt->where);
 }
 
 void execute_delete(struct delete_argu *stmt) {
-    // DBMS::getInstance()->deleteRow(stmt->table, stmt->where);
-    // free(stmt->table);
-    // if (stmt->where)
-    //     free_expr(stmt->where);
+    DBMS::getInstance()->deleteRow(stmt->table, stmt->where);
+    free(stmt->table);
+    if (stmt->where)
+        free_expr(stmt->where);
 }
 
 void execute_update(struct update_argu *stmt) {
-    // DBMS::getInstance()->updateRow(stmt->table, stmt->where, stmt->column, stmt->val_expr);
-    // free(stmt->table);
-    // if (stmt->where)
-    //     free_expr(stmt->where);
-    // free_column_ref(stmt->column);
-    // free_expr(stmt->val_expr);
+    DBMS::getInstance()->updateRow(stmt->table, stmt->where, stmt->column, stmt->val_expr);
+    free(stmt->table);
+    if (stmt->where)
+        free_expr(stmt->where);
+    free_column_ref(stmt->column);
+    free_expr(stmt->val_expr);
 }
 
 void execute_drop_idx(struct column_ref *tb_col) {

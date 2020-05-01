@@ -3,6 +3,7 @@
 
 #include "../constants.h"
 #include "Compare.h"
+#include <cstring>
 
 struct TableHead {
     int8_t columnTot, primaryCount, checkTot, foreignKeyTot;
@@ -35,7 +36,30 @@ public:
 	void close();
 	int addColumn(const char *name, ColumnType type, int size,
                   bool notNull, bool hasDefault, const char *data);
+    void printSchema();
 
+    int getColumnCount(){return head.columnTot;}
+    int getColumnID(const char *name){
+        for (int i = 1; i < head.columnTot; i++)
+            if (strcmp(head.columnName[i], name) == 0)
+                return i;
+        return -1;}
+    void clearTempRecord(){
+        if (buf == nullptr) {
+            buf = new char[head.recordByte];
+            initTempRecord();
+        }}
+    ColumnType getColumnType(int col) {return head.columnType[col];}
+
+    void initTempRecord();
+    std::string setTempRecord(int col, const char *data);
+    void setTempRecordNull(int col);
+    std::string insertTempRecord();
+    // std::string modifyRecord(RID_t rid, int col, char *data);
+    // void dropRecord(RID_t rid);
+    void allocPage();
+    std::string checkRecord();
+    void inverseFooter(const char *page, int idx);
 };
 
 #endif
