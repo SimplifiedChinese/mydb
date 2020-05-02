@@ -130,73 +130,6 @@ void DBMS::listTables() {
     printf("==========\n");
 }
 
- void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, expr_node *condition){
-
- }
-
-void DBMS::updateRow(const char *table, expr_node *condition, column_ref *column, expr_node *eval) {
-    // Table *tb;
-    // if (!requireDbOpen())
-    //     return;
-    // if (!(tb = current->getTableByName(table))) {
-    //     printf("Table %s not found\n", table);
-    //     return;
-    // }
-
-    // int col_to_update;
-    // col_to_update = tb->getColumnID(column->column);
-    // if (col_to_update == -1) {
-    //     printf("Column %s not found\n", column->column);
-    //     return;
-    // }
-    // int count = 0;
-    // try {
-    //     iterateRecords(tb, condition, [&col_to_update, &eval, &count, this](Table *tb, int rid) -> void {
-    //         Expression new_val;
-    //         new_val = calcExpression(eval);
-    //         //printf("t=%d\n", tb->getColumnType(col_to_update));
-    //         auto colType = tb->getColumnType(col_to_update);
-    //         if (!checkColumnType(colType, new_val)) {
-    //             printf("Wrong data type\n");
-    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
-    //         }
-    //         std::string ret = tb->modifyRecord(rid, col_to_update,
-    //                                            ExprTypeToDbType(new_val, ColumnTypeToExprType(colType)));
-    //         if (!ret.empty()) {
-    //             std::cout << ret << std::endl;
-    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
-    //         }
-    //         ++count;
-    //     });
-    // } catch (int err) {
-    //     //printReadableException(err);
-    // } catch (...) {
-    //     printf("Exception occur %d\n", __LINE__);
-    // }
-    // printf("%d rows updated.\n", count);
-    // freeCachedColumns();
-}
-
-void DBMS::deleteRow(const char *table, expr_node *condition) {
-    // std::vector<RID_t> toBeDeleted;
-    // Table *tb;
-    // if (!requireDbOpen())
-    //     return;
-    // if (!(tb = current->getTableByName(table))) {
-    //     printf("Table %s not found\n", table);
-    //     return;
-    // }
-    // iterateRecords(tb, condition, [&toBeDeleted, this](Table *tb, int rid) -> void {
-    //     UNUSED(tb);
-    //     toBeDeleted.push_back(rid);
-    // });
-    // for (const auto &i : toBeDeleted) {
-    //     tb->dropRecord(i);
-    // }
-    // printf("%d rows deleted.\n", (int) toBeDeleted.size());
-    // freeCachedColumns();
-}
-
 void DBMS::insertRow(const char *table, const linked_list *columns, const linked_list *values) {
     Table *tb;
     if (!requireDbOpen())
@@ -280,6 +213,103 @@ void DBMS::insertRow(const char *table, const linked_list *columns, const linked
         next_rec:;
     }
     printf("%d rows inserted.\n", count);
+}
+
+void DBMS::updateRow(const char *table, expr_node *condition, column_ref *column, expr_node *eval) {
+    // Table *tb;
+    // if (!requireDbOpen())
+    //     return;
+    // if (!(tb = current->getTableByName(table))) {
+    //     printf("Table %s not found\n", table);
+    //     return;
+    // }
+
+    // int col_to_update;
+    // col_to_update = tb->getColumnID(column->column);
+    // if (col_to_update == -1) {
+    //     printf("Column %s not found\n", column->column);
+    //     return;
+    // }
+    // int count = 0;
+    // try {
+    //     iterateRecords(tb, condition, [&col_to_update, &eval, &count, this](Table *tb, int rid) -> void {
+    //         Expression new_val;
+    //         new_val = calcExpression(eval);
+    //         //printf("t=%d\n", tb->getColumnType(col_to_update));
+    //         auto colType = tb->getColumnType(col_to_update);
+    //         if (!checkColumnType(colType, new_val)) {
+    //             printf("Wrong data type\n");
+    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
+    //         }
+    //         std::string ret = tb->modifyRecord(rid, col_to_update,
+    //                                            ExprTypeToDbType(new_val, ColumnTypeToExprType(colType)));
+    //         if (!ret.empty()) {
+    //             std::cout << ret << std::endl;
+    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
+    //         }
+    //         ++count;
+    //     });
+    // } catch (int err) {
+    //     //printReadableException(err);
+    // } catch (...) {
+    //     printf("Exception occur %d\n", __LINE__);
+    // }
+    // printf("%d rows updated.\n", count);
+    // freeCachedColumns();
+}
+
+void DBMS::deleteRow(const char *table, expr_node *condition) {
+    // std::vector<RID_t> toBeDeleted;
+    // Table *tb;
+    // if (!requireDbOpen())
+    //     return;
+    // if (!(tb = current->getTableByName(table))) {
+    //     printf("Table %s not found\n", table);
+    //     return;
+    // }
+    // iterateRecords(tb, condition, [&toBeDeleted, this](Table *tb, int rid) -> void {
+    //     UNUSED(tb);
+    //     toBeDeleted.push_back(rid);
+    // });
+    // for (const auto &i : toBeDeleted) {
+    //     tb->dropRecord(i);
+    // }
+    // printf("%d rows deleted.\n", (int) toBeDeleted.size());
+    // freeCachedColumns();
+}
+
+void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, expr_node *condition) {
+
+    if (!requireDbOpen())
+        return;
+    Table *tb;
+    auto *table = (const char *) tables->data;
+    if (!(tb = current->getTableByName(table))) {
+            printf("Table %s not found\n", table);
+    }
+    else{
+        std::map<int, Expression> aggregate_buf;
+        int col = 0;
+        std::map<int, int> rowCount;
+        for (const linked_list *j = column_expr; j; j = j->next, col++) {
+            auto node = (expr_node *) j->data;
+            if (node->op == OPER_AVG && aggregate_buf.count(col)) {
+                aggregate_buf[col] /= rowCount[col];
+            } else if (node->op == OPER_COUNT) {
+                aggregate_buf[col] = Expression();
+                aggregate_buf[col].type = TERM_INT;
+                aggregate_buf[col].value.value_i = rowCount[col];
+            }
+        }
+        for (int i = col - 1; i >= 0; i--) {
+            if (aggregate_buf.count(i) != 0)
+                printExprVal(aggregate_buf[i]);
+            else
+                printExprVal(Expression(TERM_NULL));
+            printf(" | ");
+        }
+        printf("\n");
+    }
 }
 
 void DBMS::descTable(const char *name) {
@@ -417,4 +447,32 @@ Expression DBMS::dbTypeToExprType(char *data, ColumnType type) {
             assert(0);
     }
     return v;
+}
+
+void DBMS::printExprVal(const Expression &val) {
+    switch (val.type) {
+        case TERM_INT:
+            printf("%d", val.value.value_i);
+            break;
+        case TERM_BOOL:
+            printf("%s", val.value.value_b ? "TRUE" : "FALSE");
+            break;
+        case TERM_FLOAT:
+            printf("%.2f", val.value.value_f);
+            break;
+        case TERM_STRING:
+            printf("'%s'", val.value.value_s);
+            break;
+        case TERM_DATE: {
+            auto time = (time_t) val.value.value_i;
+            auto tm = std::localtime(&time);
+            std::cout << std::put_time(tm, DATE_FORMAT);
+            break;
+        }
+        case TERM_NULL:
+            printf("NULL");
+            break;
+        default:
+            break;
+    }
 }

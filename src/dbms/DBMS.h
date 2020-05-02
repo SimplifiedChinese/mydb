@@ -52,7 +52,14 @@ public:
     // void iterateRecords(linked_list *tables, expr_node *condition, CallbackFunc callback);
     // void iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback);
     // int isAggregate(const linked_list *column_expr);
-    // void freeLinkedList(linked_list *t);
+    void printExprVal(const Expression &val);
+    void freeLinkedList(linked_list *t){
+    linked_list *next;
+    for (; t; t = next) {
+        next = t->next;
+        free(t);
+    }
+}
 };
 
 #endif
