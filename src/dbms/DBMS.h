@@ -7,6 +7,9 @@
 #include <functional>
 
 class DBMS {
+    enum IDX_TYPE {
+    IDX_NONE, IDX_LOWWER, IDX_UPPER, IDX_EQUAL
+};
     Database *current;
 
 public:
@@ -56,8 +59,9 @@ public:
     // expr_node* findJoinCondition(expr_node *condition);
     using CallbackFunc = std::function<void(Table *, RID_t)>;
     // bool iterateTwoTableRecords(Table *a, Table *b, expr_node *condition, CallbackFunc callback);
-    // void iterateRecords(linked_list *tables, expr_node *condition, CallbackFunc callback);
-    // void iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback);
+    void iterateRecords(linked_list *tables, expr_node *condition, CallbackFunc callback);
+    void iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback);
+    RID_t nextWithIndex(Table *tb, IDX_TYPE type, int col, RID_t rid, RID_t rid_u);
     // int isAggregate(const linked_list *column_expr);
     
     // 根据表达式打印值

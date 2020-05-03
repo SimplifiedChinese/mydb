@@ -279,14 +279,69 @@ void DBMS::deleteRow(const char *table, expr_node *condition) {
 }
 
 void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, expr_node *condition) {
-
+    int flags;
     if (!requireDbOpen())
         return;
-    Table *tb;
-    auto *table = (const char *) tables->data;
-    if (!(tb = current->getTableByName(table))) {
+    linked_list *openedTables = nullptr;
+    bool allOpened = true;
+    for (; tables; tables = tables->next) {
+        Table *tb;
+        auto *table = (const char *) tables->data;
+        if (!(tb = current->getTableByName(table))) {
             printf("Table %s not found\n", table);
+            allOpened = false;
+        }
+        auto *t = (linked_list *) malloc(sizeof(linked_list));
+        t->next = openedTables;
+        t->data = tb;
+        openedTables = t;
     }
+    if (!allOpened) {
+        freeLinkedList(openedTables);
+        return;
+    }
+
+    int count = 0;
+
+    iterateRecords(openedTables, condition, [&column_expr, &count, this](Table *tb, int rid) -> void {
+        std::vector<Expression> output_buf;
+        if (!column_expr) { // FIXME: will only select from one table when using *
+            for (int i = tb->getColumnCount() - 1; i > 0; --i) {
+                output_buf.push_back(
+                        dbTypeToExprType(
+                                tb->select(rid, i),
+                                tb->getColumnType(i)
+                        )
+                );
+            }
+        } else {
+            for (const linked_list *j = column_expr; j; j = j->next) {
+                auto *node = (expr_node *) j->data;
+                Expression val;
+                try {
+                    val = calcExpression(node);
+                    output_buf.push_back(val);
+                } catch (int err) {
+                    // printReadableException(err);
+                    return;
+                } catch (...) {
+                    printf("Exception occur %d\n", __LINE__);
+                    return;
+                }
+            }
+        }
+        printf("| ");
+        for (auto i = output_buf.rbegin(); i != output_buf.rend(); ++i) {
+            const Expression &val = *i;
+            printExprVal(val);
+            printf(" | ");
+        }
+        printf("\n");
+        count++;
+    });
+    printf("%d rows in query.\n", count);
+    // freeCachedColumns();
+    freeLinkedList(openedTables);
 }
 
 void DBMS::descTable(const char *name) {
@@ -453,4 +508,57 @@ void DBMS::printExprVal(const Expression &val) {
         default:
             break;
     }
+}
+
+void DBMS::iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback) {
+    RID_t rid = (RID_t) -1, rid_u;
+    int col;
+    // IDX_TYPE idx = checkIndexAvailability(tb, &rid, &rid_u, &col, condition);
+    // if (idx == IDX_NONE)
+    rid = tb->getNext((unsigned int) -1);
+    for (; rid != (RID_t) -1; rid = nextWithIndex(tb, IDX_NONE, col, rid, rid_u)) {
+        // cacheColumns(tb, rid);
+        if (condition) {
+            Expression val_cond;
+            bool cond;
+            try {
+                val_cond = calcExpression(condition);
+                cond = convertToBool(val_cond);
+            } catch (int err) {
+                // printReadableException(err);
+                return;
+            } catch (...) {
+                printf("Exception occur %d\n", __LINE__);
+                return;
+            }
+            if (!cond)
+                continue;
+        }
+        callback(tb, rid);
+    }
+}
+
+void DBMS::iterateRecords(linked_list *tables, expr_node *condition, CallbackFunc callback) {
+    auto rid = (unsigned int) -1;
+    auto tb = (Table *) tables->data;
+    if (!tables->next) { // fallback to one table
+        return iterateRecords(tb, condition, callback);
+    }
+    while ((rid = tb->getNext(rid)) != (RID_t) -1) {
+        // cacheCslumns(tb, rid);
+        iterateRecords(tables->next, condition, callback);
+    }
+}
+
+RID_t DBMS::nextWithIndex(Table *tb, IDX_TYPE type, int col, RID_t rid, RID_t rid_u) {
+    // if (type == IDX_EQUAL) {
+    //     auto nxt = tb->selectIndexNext(col);
+    //     return rid == rid_u ? (RID_t) -1 : nxt; // current rid equals upper bound
+    // } else if (type == IDX_UPPER)
+    //     return tb->selectReveredIndexNext(col);
+    // else if (type == IDX_LOWWER)
+    //     return tb->selectIndexNext(col);
+    // else {
+        return tb->getNext(rid);
+    // }
 }

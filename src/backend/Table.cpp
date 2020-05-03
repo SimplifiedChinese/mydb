@@ -268,3 +268,68 @@ void Table::inverseFooter(const char *page, int idx) {
     unsigned int &tmp = *(unsigned int *) (page + PAGE_SIZE - PAGE_FOOTER_SIZE + u * 4);
     tmp ^= (1u << v);
 }
+
+RID_t Table::getNext(RID_t rid) {
+    int page_id, id, n;
+    n = (PAGE_SIZE - PAGE_FOOTER_SIZE) / head.recordByte;
+    n = (n < MAX_REC_PER_PAGE) ? n : MAX_REC_PER_PAGE;
+    if (rid == (RID_t) -1) {
+        page_id = 0;
+        id = n - 1;
+    } else {
+        page_id = rid / PAGE_SIZE;
+        id = (rid % PAGE_SIZE) / head.recordByte;
+    }
+    int index = BufPageManager::getInstance().getPage(fileID, page_id);
+    char *page = BufPageManager::getInstance().access(index);
+
+    while (true) {
+        id++;
+        if (id == n) {
+            page_id++;
+            if (page_id >= head.pageTot) return (RID_t) -1;
+            index = BufPageManager::getInstance().getPage(fileID, page_id);
+            page = BufPageManager::getInstance().access(index);
+            id = 0;
+        }
+        if (getFooter(page, id)) return (RID_t) page_id * PAGE_SIZE + id * head.recordByte;
+    }
+}
+
+char *Table::getRecordTempPtr(RID_t rid) {
+    int pageID = rid / PAGE_SIZE;
+    int offset = rid % PAGE_SIZE;
+    assert(1 <= pageID && pageID < head.pageTot);
+    auto index = BufPageManager::getInstance().getPage(fileID, pageID);
+    auto page = BufPageManager::getInstance().access(index);
+    assert(getFooter(page, offset / head.recordByte));
+    return page + offset;
+}
+
+char *Table::select(RID_t rid, int col) {
+    char *ptr;
+    if (rid != (RID_t) -1) {
+        ptr = getRecordTempPtr(rid);
+    } else {
+        ptr = buf;
+    }
+    unsigned int &notNull = *(unsigned int *) ptr;
+    char *buf;
+    if ((~notNull) & (1 << col)) {
+        return nullptr;
+    }
+    switch (head.columnType[col]) {
+        case CT_INT:
+        case CT_DATE:
+        case CT_FLOAT:
+            buf = new char[4];
+            memcpy(buf, ptr + getColumnOffset(col), 4);
+            return buf;
+        case CT_VARCHAR:
+            buf = new char[head.columnLen[col] + 1];
+            strcpy(buf, ptr + getColumnOffset(col));
+            return buf;
+        default:
+            assert(0);
+    }
+}

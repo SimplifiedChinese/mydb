@@ -50,12 +50,22 @@ public:
                 return i;
         return -1;}
     ColumnType getColumnType(int col) {return head.columnType[col];}
+    int getColumnOffset(int col) {return head.columnOffset[col];}
+    int getFooter(const char *page, int idx) {
+        int u = idx / 32;
+        int v = idx % 32;
+        unsigned int tmp = *(unsigned int *) (page + PAGE_SIZE - PAGE_FOOTER_SIZE + u * 4);
+        return (tmp >> v) & 1;
+    }
+    char *getRecordTempPtr(RID_t rid);
+    RID_t getNext(RID_t rid);
 
     // 和temprecord有关的操作，和缓存有关
     void initTempRecord();
     std::string setTempRecord(int col, const char *data);
     void setTempRecordNull(int col);
     std::string insertTempRecord();
+    std::string checkRecord();
     void clearTempRecord(){
         if (buf == nullptr) {
             buf = new char[head.recordByte];
@@ -63,10 +73,9 @@ public:
         }
     }
 
-    void allocPage();
-    std::string checkRecord();
+    void allocPage();    
     void inverseFooter(const char *page, int idx);
-    
+    char *select(RID_t rid, int col);
 };
 
 #endif

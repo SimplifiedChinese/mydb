@@ -1,37 +1,37 @@
 [
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb.dir/main.cpp.o -c /home/lizhe/codes/DB/mydb/src/main.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb.dir/main.cpp.o -c /home/lizhe/codes/DB/mydb/src/main.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/main.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Compare.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Compare.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/backend/Compare.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/backend/Database.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Database.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/backend/Database.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Database.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/backend/Database.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/backend/Table.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Table.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/backend/Table.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Table.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/backend/Table.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/dbms/DBMS.cpp.o -c /home/lizhe/codes/DB/mydb/src/dbms/DBMS.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/dbms/DBMS.cpp.o -c /home/lizhe/codes/DB/mydb/src/dbms/DBMS.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/dbms/DBMS.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o -c /home/lizhe/codes/DB/mydb/src/sql_parser/Expression.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o -c /home/lizhe/codes/DB/mydb/src/sql_parser/Expression.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/sql_parser/Expression.cpp"
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
-  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra  -g   -o CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o -c /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.cpp",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o -c /home/lizhe/codes/DB/mydb/src/sql_parser/Execute.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/sql_parser/Execute.cpp"
 },
 {
