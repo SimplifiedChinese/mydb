@@ -287,29 +287,6 @@ void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, 
     if (!(tb = current->getTableByName(table))) {
             printf("Table %s not found\n", table);
     }
-    else{
-        std::map<int, Expression> aggregate_buf;
-        int col = 0;
-        std::map<int, int> rowCount;
-        for (const linked_list *j = column_expr; j; j = j->next, col++) {
-            auto node = (expr_node *) j->data;
-            if (node->op == OPER_AVG && aggregate_buf.count(col)) {
-                aggregate_buf[col] /= rowCount[col];
-            } else if (node->op == OPER_COUNT) {
-                aggregate_buf[col] = Expression();
-                aggregate_buf[col].type = TERM_INT;
-                aggregate_buf[col].value.value_i = rowCount[col];
-            }
-        }
-        for (int i = col - 1; i >= 0; i--) {
-            if (aggregate_buf.count(i) != 0)
-                printExprVal(aggregate_buf[i]);
-            else
-                printExprVal(Expression(TERM_NULL));
-            printf(" | ");
-        }
-        printf("\n");
-    }
 }
 
 void DBMS::descTable(const char *name) {
@@ -324,6 +301,7 @@ void DBMS::descTable(const char *name) {
 }
 
 // 非功能函数在这里面
+
 bool DBMS::checkColumnType(ColumnType type, const Expression &val) {
     if (val.type == TERM_NULL)
         return true;
