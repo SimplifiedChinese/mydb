@@ -25,6 +25,8 @@ Compare.h
 ../src/backend/Compare.h
 cstring
 -
+cassert
+-
 
 ../src/constants.h
 
@@ -110,6 +112,8 @@ RegisterManager.h
 Compare.h
 /home/lizhe/codes/DB/mydb/src/backend/Compare.h
 cstring
+-
+cassert
 -
 
 /home/lizhe/codes/DB/mydb/src/constants.h

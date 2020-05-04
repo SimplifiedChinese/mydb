@@ -4,6 +4,7 @@
 #include "../constants.h"
 #include "Compare.h"
 #include <cstring>
+#include <cassert>
 
 struct TableHead {
     int8_t columnTot, primaryCount, checkTot, foreignKeyTot;
@@ -59,19 +60,28 @@ public:
     }
     char *getRecordTempPtr(RID_t rid);
     RID_t getNext(RID_t rid);
+    std::string getTableName() {
+        assert(ready);
+        return tableName;
+    }
+    char *getColumnName(int col) {
+        assert(0 <= col && col < head.columnTot);
+        return head.columnName[col];
+    }
 
     // 和temprecord有关的操作，和缓存有关
     void initTempRecord();
     std::string setTempRecord(int col, const char *data);
     void setTempRecordNull(int col);
     std::string insertTempRecord();
-    std::string checkRecord();
     void clearTempRecord(){
         if (buf == nullptr) {
             buf = new char[head.recordByte];
             initTempRecord();
         }
     }
+    std::string checkRecord();
+    void dropRecord(RID_t rid);
 
     void allocPage();    
     void inverseFooter(const char *page, int idx);

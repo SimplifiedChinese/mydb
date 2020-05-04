@@ -53,8 +53,8 @@ public:
     term_type ColumnTypeToExprType(const ColumnType& type);
     // 检查表达式的值是否相符
     bool checkColumnType(ColumnType type, const Expression &val);
-    
-    // void cacheColumns(Table *tb, int rid);
+    // 缓存的列，和查询有关
+    void cacheColumns(Table *tb, int rid);
     // void freeCachedColumns();
     // expr_node* findJoinCondition(expr_node *condition);
     using CallbackFunc = std::function<void(Table *, RID_t)>;

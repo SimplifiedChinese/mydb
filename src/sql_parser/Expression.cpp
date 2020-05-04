@@ -142,6 +142,7 @@ Expression termToValue(expr_node *expr) {
             ret.value.value_b = expr->literal_b;
             break;
         case TERM_COLUMN: {
+            // printf("%s\n",string(expr->column->column).c_str());
             auto cnt = column_cache.count(string(expr->column->column));
             if (!cnt)
                 goto unknown_col;

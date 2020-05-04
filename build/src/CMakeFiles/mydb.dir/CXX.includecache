@@ -25,6 +25,8 @@ Compare.h
 ../src/backend/Compare.h
 cstring
 -
+cassert
+-
 
 ../src/constants.h
 

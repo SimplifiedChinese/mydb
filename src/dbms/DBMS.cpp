@@ -255,26 +255,26 @@ void DBMS::updateRow(const char *table, expr_node *condition, column_ref *column
     //     printf("Exception occur %d\n", __LINE__);
     // }
     // printf("%d rows updated.\n", count);
-    // freeCachedColumns();
+    // // freeCachedColumns();
 }
 
 void DBMS::deleteRow(const char *table, expr_node *condition) {
-    // std::vector<RID_t> toBeDeleted;
-    // Table *tb;
-    // if (!requireDbOpen())
-    //     return;
-    // if (!(tb = current->getTableByName(table))) {
-    //     printf("Table %s not found\n", table);
-    //     return;
-    // }
-    // iterateRecords(tb, condition, [&toBeDeleted, this](Table *tb, int rid) -> void {
-    //     UNUSED(tb);
-    //     toBeDeleted.push_back(rid);
-    // });
-    // for (const auto &i : toBeDeleted) {
-    //     tb->dropRecord(i);
-    // }
-    // printf("%d rows deleted.\n", (int) toBeDeleted.size());
+    std::vector<RID_t> toBeDeleted;
+    Table *tb;
+    if (!requireDbOpen())
+        return;
+    if (!(tb = current->getTableByName(table))) {
+        printf("Table %s not found\n", table);
+        return;
+    }
+    iterateRecords(tb, condition, [&toBeDeleted, this](Table *tb, int rid) -> void {
+        UNUSED(tb);
+        toBeDeleted.push_back(rid);
+    });
+    for (const auto &i : toBeDeleted) {
+        tb->dropRecord(i);
+    }
+    printf("%d rows deleted.\n", (int) toBeDeleted.size());
     // freeCachedColumns();
 }
 
@@ -300,7 +300,7 @@ void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, 
         freeLinkedList(openedTables);
         return;
     }
-
+    cleanColumnCache();
     int count = 0;
 
     iterateRecords(openedTables, condition, [&column_expr, &count, this](Table *tb, int rid) -> void {
@@ -517,7 +517,7 @@ void DBMS::iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback
     // if (idx == IDX_NONE)
     rid = tb->getNext((unsigned int) -1);
     for (; rid != (RID_t) -1; rid = nextWithIndex(tb, IDX_NONE, col, rid, rid_u)) {
-        // cacheColumns(tb, rid);
+        cacheColumns(tb, rid);
         if (condition) {
             Expression val_cond;
             bool cond;
@@ -561,4 +561,20 @@ RID_t DBMS::nextWithIndex(Table *tb, IDX_TYPE type, int col, RID_t rid, RID_t ri
     // else {
         return tb->getNext(rid);
     // }
+}
+
+void DBMS::cacheColumns(Table *tb, int rid) {
+    auto tb_name = tb->getTableName();
+    tb_name = tb_name.substr(tb_name.find('.') + 1); //strip database name
+    tb_name = tb_name.substr(0, tb_name.find('.'));
+    cleanColumnCacheByTable(tb_name.c_str());
+    for (int i = 1; i <= tb->getColumnCount() - 1; ++i)//exclude RID
+    {
+        auto *tmp = tb->select(rid, i);
+        updateColumnCache(tb->getColumnName(i),
+                          tb_name.c_str(),
+                          dbTypeToExprType(tmp, tb->getColumnType(i))
+        );
+        // pendingFree.push_back(tmp);
+    }
 }
