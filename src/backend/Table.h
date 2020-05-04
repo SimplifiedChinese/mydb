@@ -82,6 +82,9 @@ public:
     }
     std::string checkRecord();
     void dropRecord(RID_t rid);
+    std::string modifyRecord(RID_t rid, int col, char *data);
+    std::string modifyRecordNull(RID_t rid, int col);
+    std::string loadRecordToTemp(RID_t rid, char *page, int offset);
 
     void allocPage();    
     void inverseFooter(const char *page, int idx);

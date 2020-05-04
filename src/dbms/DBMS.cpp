@@ -216,46 +216,46 @@ void DBMS::insertRow(const char *table, const linked_list *columns, const linked
 }
 
 void DBMS::updateRow(const char *table, expr_node *condition, column_ref *column, expr_node *eval) {
-    // Table *tb;
-    // if (!requireDbOpen())
-    //     return;
-    // if (!(tb = current->getTableByName(table))) {
-    //     printf("Table %s not found\n", table);
-    //     return;
-    // }
+    Table *tb;
+    if (!requireDbOpen())
+        return;
+    if (!(tb = current->getTableByName(table))) {
+        printf("Table %s not found\n", table);
+        return;
+    }
 
-    // int col_to_update;
-    // col_to_update = tb->getColumnID(column->column);
-    // if (col_to_update == -1) {
-    //     printf("Column %s not found\n", column->column);
-    //     return;
-    // }
-    // int count = 0;
-    // try {
-    //     iterateRecords(tb, condition, [&col_to_update, &eval, &count, this](Table *tb, int rid) -> void {
-    //         Expression new_val;
-    //         new_val = calcExpression(eval);
-    //         //printf("t=%d\n", tb->getColumnType(col_to_update));
-    //         auto colType = tb->getColumnType(col_to_update);
-    //         if (!checkColumnType(colType, new_val)) {
-    //             printf("Wrong data type\n");
-    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
-    //         }
-    //         std::string ret = tb->modifyRecord(rid, col_to_update,
-    //                                            ExprTypeToDbType(new_val, ColumnTypeToExprType(colType)));
-    //         if (!ret.empty()) {
-    //             std::cout << ret << std::endl;
-    //             throw (int) EXCEPTION_WRONG_DATA_TYPE;
-    //         }
-    //         ++count;
-    //     });
-    // } catch (int err) {
-    //     //printReadableException(err);
-    // } catch (...) {
-    //     printf("Exception occur %d\n", __LINE__);
-    // }
-    // printf("%d rows updated.\n", count);
-    // // freeCachedColumns();
+    int col_to_update;
+    col_to_update = tb->getColumnID(column->column);
+    if (col_to_update == -1) {
+        printf("Column %s not found\n", column->column);
+        return;
+    }
+    int count = 0;
+    try {
+        iterateRecords(tb, condition, [&col_to_update, &eval, &count, this](Table *tb, int rid) -> void {
+            Expression new_val;
+            new_val = calcExpression(eval);
+            // printf("t=%d\n", tb->getColumnType(col_to_update));
+            auto colType = tb->getColumnType(col_to_update);
+            if (!checkColumnType(colType, new_val)) {
+                printf("Wrong data type\n");
+                throw (int) EXCEPTION_WRONG_DATA_TYPE;
+            }
+            std::string ret = tb->modifyRecord(rid, col_to_update,
+                                               ExprTypeToDbType(new_val, ColumnTypeToExprType(colType)));
+            if (!ret.empty()) {
+                std::cout << ret << std::endl;
+                throw (int) EXCEPTION_WRONG_DATA_TYPE;
+            }
+            ++count;
+        });
+    } catch (int err) {
+        //printReadableException(err);
+    } catch (...) {
+        printf("Exception occur %d\n", __LINE__);
+    }
+    printf("%d rows updated.\n", count);
+    // freeCachedColumns();
 }
 
 void DBMS::deleteRow(const char *table, expr_node *condition) {
