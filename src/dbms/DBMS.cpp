@@ -300,7 +300,84 @@ void DBMS::selectRow(const linked_list *tables, const linked_list *column_expr, 
         freeLinkedList(openedTables);
         return;
     }
+    flags = isAggregate(column_expr);
+    if (flags == 3) {
+        printf("Error: Cannot mix aggregate functions and non-aggregate columns in one query\n");
+        return;
+    }
     cleanColumnCache();
+    if (flags == 2) { //aggregate functions only
+        std::map<int, Expression> aggregate_buf;
+        std::map<int, int> rowCount;
+        try {
+            iterateRecords(openedTables, condition,
+                           [&rowCount, &aggregate_buf, &column_expr, this](Table *tb, int rid) -> void {
+                               UNUSED(tb);
+                               UNUSED(rid);
+                               int col = 0;
+                               for (const linked_list *j = column_expr; j; j = j->next, col++) {
+                                   auto node = (expr_node *) j->data;
+                                   Expression val;
+                                   if (node->op != OPER_COUNT) {
+                                       val = calcExpression(node->left);
+                                   }
+                                   if (node->left == nullptr || val.type != TERM_NULL) {
+                                       rowCount[col]++;
+                                       if (node->op != OPER_COUNT && !aggregate_buf.count(col)) {
+                                           aggregate_buf[col] = (val);
+                                       } else {
+                                           switch (node->op) {
+                                               case OPER_MIN:
+                                                   if (val < aggregate_buf[col])
+                                                       aggregate_buf[col] = val;
+                                                   break;
+                                               case OPER_MAX:
+                                                   if (aggregate_buf[col] < val)
+                                                       aggregate_buf[col] = val;
+                                                   break;
+                                               case OPER_SUM:
+                                               case OPER_AVG:
+                                                   aggregate_buf[col] += val;
+                                                   break;
+                                               default:
+                                                   break;
+                                           }
+                                       }
+                                   }
+
+                               }
+                           });
+        } catch (int err) {
+            // printReadableException(err);
+            return;
+        } catch (...) {
+            printf("Exception occur %d\n", __LINE__);
+            return;
+        }
+        int col = 0;
+        printf("| ");
+        for (const linked_list *j = column_expr; j; j = j->next, col++) {
+            auto node = (expr_node *) j->data;
+            if (node->op == OPER_AVG && aggregate_buf.count(col)) {
+                aggregate_buf[col] /= rowCount[col];
+            } else if (node->op == OPER_COUNT) {
+                aggregate_buf[col] = Expression();
+                aggregate_buf[col].type = TERM_INT;
+                aggregate_buf[col].value.value_i = rowCount[col];
+            }
+        }
+        for (int i = col - 1; i >= 0; i--) {
+            if (aggregate_buf.count(i) != 0)
+                printExprVal(aggregate_buf[i]);
+            else
+                printExprVal(Expression(TERM_NULL));
+            printf(" | ");
+        }
+        printf("\n");
+        // freeCachedColumns();
+        freeLinkedList(openedTables);
+        return;
+    }
     int count = 0;
 
     iterateRecords(openedTables, condition, [&column_expr, &count, this](Table *tb, int rid) -> void {
@@ -577,4 +654,22 @@ void DBMS::cacheColumns(Table *tb, int rid) {
         );
         // pendingFree.push_back(tmp);
     }
+}
+
+int DBMS::isAggregate(const linked_list *column_expr) {
+    int flags = 0;
+    for (const linked_list *j = column_expr; j; j = j->next) {
+        auto *node = (expr_node *) j->data;
+        if (node->op == OPER_MAX ||
+            node->op == OPER_MIN ||
+            node->op == OPER_AVG ||
+            node->op == OPER_SUM ||
+            node->op == OPER_COUNT) {
+
+            flags |= 2;
+        } else {
+            flags |= 1;
+        }
+    }
+    return flags;
 }
