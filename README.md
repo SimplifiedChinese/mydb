@@ -3,4 +3,4 @@ A DBMS, the most complex Manage System I've created,in my view
 
 
 
-最近提交有bug，commit了没有绿
+现在想说点儿什么，其实最近并没有针对其做程序，更多时间都是在思考上面，对于其它主流的关系型数据库都需要有一定的了解。
