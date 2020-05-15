@@ -414,3 +414,15 @@ std::string Table::loadRecordToTemp(RID_t rid, char *page, int offset) {
     memcpy(buf, record, (size_t) head.recordByte);
     return "";
 }
+
+void Table::createIndex(int col) {
+    //assert(head.pageTot == 1);
+    assert((head.hasIndex & (1 << col)) == 0);
+    head.hasIndex |= 1 << col;
+}
+
+void Table::dropIndex(int col) {
+    assert((head.hasIndex & (1 << col)));
+    head.hasIndex &= ~(1 << col);
+    colIndex[col].drop(permID, col);
+}
