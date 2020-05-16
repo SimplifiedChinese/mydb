@@ -21,6 +21,11 @@
 },
 {
   "directory": "/home/lizhe/codes/DB/mydb/build/src",
+  "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/backend/Index.cpp.o -c /home/lizhe/codes/DB/mydb/src/backend/Index.cpp",
+  "file": "/home/lizhe/codes/DB/mydb/src/backend/Index.cpp"
+},
+{
+  "directory": "/home/lizhe/codes/DB/mydb/build/src",
   "command": "/bin/g++-6   -I/home/lizhe/codes/DB/mydb/src  --std=c++11 -O3 -Wall -Wextra   -O0 -Wall -g2 -ggdb   -o CMakeFiles/mydb_lib.dir/dbms/DBMS.cpp.o -c /home/lizhe/codes/DB/mydb/src/dbms/DBMS.cpp",
   "file": "/home/lizhe/codes/DB/mydb/src/dbms/DBMS.cpp"
 },

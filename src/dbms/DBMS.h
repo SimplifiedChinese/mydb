@@ -67,6 +67,13 @@ public:
     // expr_node* findJoinCondition(expr_node *condition);
     // bool iterateTwoTableRecords(Table *a, Table *b, expr_node *condition, CallbackFunc callback);
 
+    // 检查索引是否合法
+    IDX_TYPE checkIndexAvailability(Table *tb, RID_t *rid_l, RID_t *rid_u, int *col, expr_node *condition);
+    // 难度爆表的函数，创建索引
+    void createIndex(column_ref *tb_col);
+    // 难度更大的函数，删除索引
+    void dropIndex(column_ref *tb_col);
+
     // 根据表达式打印值
     void printExprVal(const Expression &val);
     // 链表释放

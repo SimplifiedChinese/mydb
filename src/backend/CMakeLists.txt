@@ -3,6 +3,7 @@ set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/Compare.h
         ${CMAKE_CURRENT_SOURCE_DIR}/Database.h
         ${CMAKE_CURRENT_SOURCE_DIR}/RegisterManager.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/Index.h
         ${CMAKE_CURRENT_SOURCE_DIR}/Table.h
         PARENT_SCOPE
         )
@@ -12,5 +13,6 @@ set(SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/Compare.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Database.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Table.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Index.cpp
         PARENT_SCOPE
         )

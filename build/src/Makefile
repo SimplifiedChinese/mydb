@@ -194,6 +194,33 @@ backend/Database.cpp.s:
 	cd /home/lizhe/codes/DB/mydb/build && $(MAKE) -f src/CMakeFiles/mydb_lib.dir/build.make src/CMakeFiles/mydb_lib.dir/backend/Database.cpp.s
 .PHONY : backend/Database.cpp.s
 
+backend/Index.o: backend/Index.cpp.o
+
+.PHONY : backend/Index.o
+
+# target to build an object file
+backend/Index.cpp.o:
+	cd /home/lizhe/codes/DB/mydb/build && $(MAKE) -f src/CMakeFiles/mydb_lib.dir/build.make src/CMakeFiles/mydb_lib.dir/backend/Index.cpp.o
+.PHONY : backend/Index.cpp.o
+
+backend/Index.i: backend/Index.cpp.i
+
+.PHONY : backend/Index.i
+
+# target to preprocess a source file
+backend/Index.cpp.i:
+	cd /home/lizhe/codes/DB/mydb/build && $(MAKE) -f src/CMakeFiles/mydb_lib.dir/build.make src/CMakeFiles/mydb_lib.dir/backend/Index.cpp.i
+.PHONY : backend/Index.cpp.i
+
+backend/Index.s: backend/Index.cpp.s
+
+.PHONY : backend/Index.s
+
+# target to generate assembly for a file
+backend/Index.cpp.s:
+	cd /home/lizhe/codes/DB/mydb/build && $(MAKE) -f src/CMakeFiles/mydb_lib.dir/build.make src/CMakeFiles/mydb_lib.dir/backend/Index.cpp.s
+.PHONY : backend/Index.cpp.s
+
 backend/Table.o: backend/Table.cpp.o
 
 .PHONY : backend/Table.o
@@ -345,6 +372,9 @@ help:
 	@echo "... backend/Database.o"
 	@echo "... backend/Database.i"
 	@echo "... backend/Database.s"
+	@echo "... backend/Index.o"
+	@echo "... backend/Index.i"
+	@echo "... backend/Index.s"
 	@echo "... backend/Table.o"
 	@echo "... backend/Table.i"
 	@echo "... backend/Table.s"

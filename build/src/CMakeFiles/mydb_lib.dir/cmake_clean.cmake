@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/mydb_lib.dir/backend/Compare.cpp.o"
   "CMakeFiles/mydb_lib.dir/backend/Database.cpp.o"
   "CMakeFiles/mydb_lib.dir/backend/Table.cpp.o"
+  "CMakeFiles/mydb_lib.dir/backend/Index.cpp.o"
   "CMakeFiles/mydb_lib.dir/dbms/DBMS.cpp.o"
   "CMakeFiles/mydb_lib.dir/sql_parser/Expression.cpp.o"
   "CMakeFiles/mydb_lib.dir/sql_parser/Execute.cpp.o"
