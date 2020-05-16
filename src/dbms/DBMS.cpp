@@ -432,39 +432,6 @@ void DBMS::descTable(const char *name) {
     tb->printSchema();
 }
 
-void DBMS::createIndex(column_ref *tb_col) {
-    Table *tb;
-    if (!requireDbOpen())
-        return;
-    if (!(tb = current->getTableByName(tb_col->table))) {
-        printf("Table %s not found\n", tb_col->table);
-        return;
-    }
-    int t = tb->getColumnID(tb_col->column);
-    if (t == -1) {
-        printf("Column %s not exist\n", tb_col->column);
-    } else
-        tb->createIndex(t);
-}
-
-void DBMS::dropIndex(column_ref *tb_col) {
-    Table *tb;
-    if (!requireDbOpen())
-        return;
-    if (!(tb = current->getTableByName(tb_col->table))) {
-        printf("Table %s not found\n", tb_col->table);
-        return;
-    }
-    int t = tb->getColumnID(tb_col->column);
-    if (t == -1) {
-        printf("Column %s not exist\n", tb_col->column);
-    } else if (!tb->hasIndex(t)) {
-        printf("No index on %s(%s)\n", tb_col->table, tb_col->column);
-    } else {
-        tb->dropIndex(t);
-    }
-}
-
 // 非功能函数在这里面
 
 bool DBMS::checkColumnType(ColumnType type, const Expression &val) {
@@ -623,9 +590,9 @@ void DBMS::printExprVal(const Expression &val) {
 void DBMS::iterateRecords(Table *tb, expr_node *condition, CallbackFunc callback) {
     RID_t rid = (RID_t) -1, rid_u;
     int col;
-    IDX_TYPE idx = checkIndexAvailability(tb, &rid, &rid_u, &col, condition);
-    if (idx == IDX_NONE)
-        rid = tb->getNext((unsigned int) -1);
+    // IDX_TYPE idx = checkIndexAvailability(tb, &rid, &rid_u, &col, condition);
+    // if (idx == IDX_NONE)
+    rid = tb->getNext((unsigned int) -1);
     for (; rid != (RID_t) -1; rid = nextWithIndex(tb, IDX_NONE, col, rid, rid_u)) {
         cacheColumns(tb, rid);
         if (condition) {
@@ -705,46 +672,4 @@ int DBMS::isAggregate(const linked_list *column_expr) {
         }
     }
     return flags;
-}
-
-DBMS::IDX_TYPE DBMS::checkIndexAvailability(Table *tb, RID_t *rid_l, RID_t *rid_u, int *col, expr_node *condition) {
-    //TODO: complex conditions
-    if (condition && condition->node_type == TERM_NONE && condition->op == OPER_AND)
-        condition = condition->left;
-    if (!(condition && condition->node_type == TERM_NONE && condition->left->node_type == TERM_COLUMN))
-        return IDX_NONE;
-    auto col_name = condition->left->column->column;
-    int c = tb->getColumnID(col_name);
-    if (c == -1 || !tb->hasIndex(c))
-        return IDX_NONE;
-    Expression v;
-    try {
-        v = calcExpression(condition->right);
-    } catch (int err) {
-        // printReadableException(err);
-        return IDX_NONE;
-    }
-    IDX_TYPE type;
-    switch (condition->op) {
-        case OPER_EQU:
-            type = IDX_EQUAL;
-            break;
-        case OPER_LT:
-        case OPER_LE:
-            type = IDX_UPPER;
-            break;
-        case OPER_GT:
-        case OPER_GE:
-            type = IDX_LOWWER;
-            break;
-        default:
-            type = IDX_NONE;
-    }
-    if (type != IDX_NONE) {
-        *col = c;
-        auto colType = ColumnTypeToExprType(tb->getColumnType(c));
-        *rid_u = tb->selectIndexUpperBound(c, ExprTypeToDbType(v, colType));
-        *rid_l = tb->selectIndexLowerBound(c, ExprTypeToDbType(v, colType));
-    }
-    return type;
 }

@@ -91,23 +91,6 @@ public:
     void allocPage();    
     void inverseFooter(const char *page, int idx);
     char *select(RID_t rid, int col);
-
-    void createIndex(int col);
-    void dropIndex(int col);
-    bool hasIndex(int col){
-        return (head.hasIndex & (1 << col)) != 0;
-    }    
-    RID_t selectIndexLowerBound(int col, const char *data);
-    RID_t selectIndexLowerBoundEqual(int col, const char *data);
-    RID_t selectIndexLowerBoundNull(int col);
-    RID_t selectIndexNext(int col);
-    RID_t selectIndexNextEqual(int col);
-    RID_t selectIndexUpperBound(int col, const char *data);
-    RID_t selectIndexUpperBoundNull(int col);
-    RID_t selectReveredIndexNext(int col);
-    int getFastCmp(RID_t rid, int col);
-    bool getIsNull(RID_t rid, int col);
-    // 还没实现的函数，实现了记得即使移走
 };
 
 #endif
